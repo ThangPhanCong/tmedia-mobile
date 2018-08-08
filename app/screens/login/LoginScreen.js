@@ -38,6 +38,17 @@ class LoginScreen extends PureComponent{
             <View style={styles.divider}></View>
           </View>
         </View>
+
+        <View style={styles.facebookContainer}>
+          <Image source={require('../../../assets/facebook/facebook.png')} style={styles.imgFacebook}/>
+          <Text style={styles.textFacebook}>Facebook</Text>
+        </View>
+
+        <View style={styles.googleContainer}>
+          <Image source={require('../../../assets/google/google.png')} style={styles.imgGoogle}/>
+          <Text style={styles.textGoogle}>Google</Text>
+        </View>
+
       </View>
     )
   }
@@ -54,11 +65,15 @@ const styles = ScaledSheet.create({
     position: 'absolute',
     top: 0,
     bottom: 0,
+    left: 0,
+    right: 0,
+    width: null,
+    height: null
   },
   logoContainer: {
     flex: 0.5,
     alignItems: 'center',
-    marginTop: '30@s'
+    marginTop: '70@s'
   },
   imgLogo: {
     width: '100@s',
@@ -72,7 +87,8 @@ const styles = ScaledSheet.create({
     borderWidth: '1@s',
     alignItems: 'center',
     borderRadius: '3@s',
-    height: '48@s'
+    height: '48@s',
+    marginTop: '80@s'
   },
   inputLogin: {
     flex: 1,
@@ -112,5 +128,47 @@ const styles = ScaledSheet.create({
     color: '#FFF',
     marginLeft: '15@s',
     marginRight: '15@s',
+  },
+  facebookContainer: {
+    marginTop: '17@s',
+    flexDirection: 'row',
+    backgroundColor: '#3C5895',
+    marginLeft: '40@s',
+    marginRight: '40@s',
+    alignItems: 'center',
+    borderRadius: '3@s',
+    height: '48@s'
+  },
+  googleContainer: {
+    marginTop: '15@s',
+    flexDirection: 'row',
+    backgroundColor: '#D34939',
+    marginLeft: '40@s',
+    marginRight: '40@s',
+    alignItems: 'center',
+    borderRadius: '3@s',
+    height: '48@s'
+  },
+  imgFacebook: {
+    marginLeft: '22@s',
+    width: '10@s',
+    height: '22@s',
+  },
+  textFacebook: {
+    flex: 0.9,
+    textAlign: 'center',
+    fontSize: '12@s',
+    color: '#FFF'
+  },
+  textGoogle: {
+    flex: 0.8,
+    textAlign: 'center',
+    fontSize: '12@s',
+    color: '#FFF'
+  },
+  imgGoogle: {
+    marginLeft: '22@s',
+    width: '25@s',
+    height: '23@s',
   }
 });
