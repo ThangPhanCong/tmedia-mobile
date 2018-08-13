@@ -1,8 +1,16 @@
-import React, {PureComponent} from 'react';
-import { View, Text, Image, TextInput } from 'react-native';
+import React, { PureComponent } from 'react';
+import { View, Text, Image, TextInput, TouchableWithoutFeedback, ToastAndroid } from 'react-native';
 import ScaledSheet from '../../libs/reactSizeMatter/ScaledSheet';
 
-class LoginScreen extends PureComponent{
+class LoginScreen extends PureComponent {
+  state = {
+    email: null,
+    password: null,
+    isShowInputPassword: false
+  };
+
+  messageEmailError: '';
+
   static get options() {
     return {
       topBar: {
@@ -13,20 +21,80 @@ class LoginScreen extends PureComponent{
     };
   }
 
+  _changeEmail(email) {
+    const getFormatEmail = this._validateEmail(email);
+
+    this.setState({ email });
+
+    if (!email || !getFormatEmail) {
+      this.setState({ isShowInputPassword: false });
+    }
+
+  }
+
+  _changePassword(password) {
+    this.setState({ password });
+  }
+
+  _validateEmail(email) {
+    const reg = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+
+    return reg.test(email);
+  }
+
+  _checkEmail() {
+    const { email } = this.state;
+    const getFormatEmail = this._validateEmail(email);
+
+    if (!email || !getFormatEmail) {
+      !email ? this.messageEmailError = 'Email không được để trống' : this.messageEmailError = 'Email sai định dạng';
+
+      ToastAndroid.showWithGravity(
+        this.messageEmailError,
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER
+      );
+      this.setState({ isShowInputPassword: false })
+    } else {
+      this.setState({ isShowInputPassword: true })
+    }
+  }
+
   render() {
-    return(
+    const { email, password, isShowInputPassword } = this.state;
+
+    return (
       <View style={styles.screen}>
-        <Image source={require('../../../assets/backgroundLogin/backgroundLogin.png')} style={styles.imgBackgroundLogin} />
+        <Image source={require('../../../assets/backgroundLogin/backgroundLogin.png')}
+               style={styles.imgBackgroundLogin}/>
 
         <View style={styles.logoContainer}>
-          <Image source={require('../../../assets/logo/logo.png')} style={styles.imgLogo} />
+          <Image source={require('../../../assets/logo/logo.png')} style={styles.imgLogo}/>
         </View>
 
-        <View style={styles.inputContainer}>
+        <View style={styles.inputEmailContainer}>
           <Image source={require('../../../assets/email/email.png')} style={styles.imgEmail}/>
-          <TextInput style={styles.inputLogin} value={'dungnguyen@sotatek.com'}/>
-          <Image source={require('../../../assets/arrowRightRound/arrowRightRound.png')} style={styles.imgArrowRight}/>
+          <TextInput style={styles.inputLogin} value={email} onChangeText={(e) => this._changeEmail(e)}/>
+
+          {!isShowInputPassword ? <TouchableWithoutFeedback onPress={() => this._checkEmail()}>
+            <Image source={require('../../../assets/arrowRightRound/arrowRightRound.png')}
+                   style={styles.imgArrowRight}/>
+          </TouchableWithoutFeedback> : null}
+
         </View>
+
+        {isShowInputPassword ? <View style={styles.inputPasswordContainer}>
+          <Image source={require('../../../assets/padlock/padlock.png')} style={styles.imgPadlock}/>
+          <TextInput style={styles.inputLogin}
+                     value={password}
+                     secureTextEntry={true}
+                     onChangeText={(p) => this._changePassword(p)}/>
+          <TouchableWithoutFeedback onPress={() => this._checkEmail()}>
+            <Image source={require('../../../assets/enter/enter.png')}
+                   style={styles.imgEnter}/>
+          </TouchableWithoutFeedback>
+        </View> : null}
+
 
         <View style={styles.forgotContainer}>
           <Text style={styles.textForgotPassword}>Forgot password</Text>
@@ -49,6 +117,11 @@ class LoginScreen extends PureComponent{
           <Text style={styles.textGoogle}>Google</Text>
         </View>
 
+        <View style={styles.termContainer}>
+          <Text style={styles.textTerm}>Terms & Conditions <Text style={styles.dividerTerm}> | </Text> Policy
+            <Text style={styles.dividerTerm}>  | </Text> White Paper
+            <Text style={styles.dividerTerm}>  | </Text> Token Sale Agreements</Text>
+        </View>
       </View>
     )
   }
@@ -79,7 +152,7 @@ const styles = ScaledSheet.create({
     width: '100@s',
     height: '116@s',
   },
-  inputContainer: {
+  inputEmailContainer: {
     flexDirection: 'row',
     marginLeft: '40@s',
     marginRight: '40@s',
@@ -87,8 +160,22 @@ const styles = ScaledSheet.create({
     borderWidth: '1@s',
     alignItems: 'center',
     borderRadius: '3@s',
-    height: '48@s',
+    height: '40@s',
     marginTop: '80@s'
+  },
+  inputPasswordContainer: {
+    flexDirection: 'row',
+    marginLeft: '40@s',
+    marginRight: '40@s',
+    borderColor: '#FFF',
+    borderTopWidth: 0,
+    borderWidth: '1@s',
+    alignItems: 'center',
+    borderRadius: '3@s',
+    height: '40@s',
+    width: '295@s',
+    position: 'absolute',
+    top: '45%'
   },
   inputLogin: {
     flex: 1,
@@ -97,7 +184,13 @@ const styles = ScaledSheet.create({
   imgEmail: {
     width: '18@s',
     height: '12@s',
-    marginLeft: '18@s',
+    marginLeft: '13@s',
+    marginRight: '18@s',
+  },
+  imgPadlock: {
+    width: '11@s',
+    height: '16@s',
+    marginLeft: '19@s',
     marginRight: '18@s',
   },
   imgArrowRight: {
@@ -105,17 +198,22 @@ const styles = ScaledSheet.create({
     height: '20@s',
     marginRight: '8@s'
   },
+  imgEnter: {
+    width: '16@s',
+    height: '16@s',
+    marginRight: '8@s'
+  },
   forgotContainer: {
     alignItems: 'center',
-    marginTop: '70@s'
+    marginTop: '12@s'
   },
   orContanier: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: '25@s'
+    marginTop: '14@s'
   },
   textForgotPassword: {
-    fontSize: '12@s',
+    fontSize: '13@s',
     color: '#FFF',
   },
   divider: {
@@ -137,7 +235,7 @@ const styles = ScaledSheet.create({
     marginRight: '40@s',
     alignItems: 'center',
     borderRadius: '3@s',
-    height: '48@s'
+    height: '40@s'
   },
   googleContainer: {
     marginTop: '15@s',
@@ -147,7 +245,7 @@ const styles = ScaledSheet.create({
     marginRight: '40@s',
     alignItems: 'center',
     borderRadius: '3@s',
-    height: '48@s'
+    height: '40@s'
   },
   imgFacebook: {
     marginLeft: '22@s',
@@ -170,5 +268,23 @@ const styles = ScaledSheet.create({
     marginLeft: '22@s',
     width: '25@s',
     height: '23@s',
+  },
+  termContainer: {
+    flexDirection: 'row',
+    marginTop: '40@s',
+    position: 'absolute',
+    top: '89%',
+    alignItems: 'center'
+  },
+  textTerm: {
+    color: '#FFF',
+    textAlign: 'center',
+    marginLeft: '20@s',
+    fontSize: '10@s',
+    letterSpacing: '0.5@s',
+  },
+  dividerTerm: {
+    color: '#979797',
+    fontSize: '10@s',
   }
 });
