@@ -39,9 +39,8 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>NSAppTransportSecurity</key>
-	<!--See http://ste.vn/2015/06/10/configuring-app-transport-security-ios-9-osx-10-11/ -->
 	<dict>
 		<key>NSExceptionDomains</key>
 		<dict>
@@ -52,5 +51,17 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>UIAppFonts</key>
+	<array>
+		<string>FS Siruca.ttf</string>
+		<string>Futura Book font.ttf</string>
+		<string>Futura Book Italic font.ttf</string>
+		<string>Futura Heavy font.ttf</string>
+		<string>Futura Light font.ttf</string>
+		<string>Futura Light Italic font.ttf</string>
+		<string>Futura Light Regular.otf</string>
+		<string>Futura.ttc</string>
+		<string>UTM BanqueR.ttf</string>
+	</array>
 </dict>
 </plist>

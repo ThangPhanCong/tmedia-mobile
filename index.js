@@ -10,7 +10,7 @@ Navigation.events().registerAppLaunchedListener(() => {
         children: [
           {
             component: {
-              name: 'Register',
+              name: 'Ico',
             }
           }
         ],
