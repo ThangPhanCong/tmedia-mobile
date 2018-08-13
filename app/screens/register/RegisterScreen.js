@@ -19,6 +19,9 @@ class RegisterScreen extends PureComponent {
         <Image source={require('../../../assets/backgroundLogin/backgroundLogin.png')}
                style={styles.imgBackgroundLogin}/>
 
+        <Image source={require('../../../assets/back/back.png')}
+               style={styles.imgBack}/>
+
         <View style={styles.logoContainer}>
           <Image source={require('../../../assets/logo/logo.png')} style={styles.imgLogo}/>
         </View>
@@ -67,8 +70,8 @@ class RegisterScreen extends PureComponent {
         <View style={styles.termContainer}>
           <Text style={styles.textCreating}>By creating an account, you agree to our</Text>
           <Text style={styles.textTerm}>Terms & Conditions <Text style={styles.dividerTerm}> | </Text> Policy
-            <Text style={styles.dividerTerm}>  | </Text> White Paper
-            <Text style={styles.dividerTerm}>  | </Text> Token Sale Agreements</Text>
+            <Text style={styles.dividerTerm}> | </Text> White Paper
+            <Text style={styles.dividerTerm}> | </Text> Token Sale Agreements</Text>
         </View>
       </View>
     )
@@ -90,6 +93,12 @@ const styles = ScaledSheet.create({
     right: 0,
     width: null,
     height: null
+  },
+  imgBack: {
+    width: '11@s',
+    height: '20@s',
+    marginTop: '10@s',
+    marginLeft: '18@s',
   },
   logoContainer: {
     flex: 0.5,
