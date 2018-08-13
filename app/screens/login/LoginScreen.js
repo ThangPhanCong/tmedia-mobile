@@ -26,8 +26,8 @@ class LoginScreen extends PureComponent {
 
     this.setState({ email });
 
-    if(!email || !getFormatEmail) {
-      this.setState({isShowInputPassword: false});
+    if (!email || !getFormatEmail) {
+      this.setState({ isShowInputPassword: false });
     }
 
   }
@@ -46,7 +46,7 @@ class LoginScreen extends PureComponent {
     const { email } = this.state;
     const getFormatEmail = this._validateEmail(email);
 
-    if(!email || !getFormatEmail) {
+    if (!email || !getFormatEmail) {
       !email ? this.messageEmailError = 'Email không được để trống' : this.messageEmailError = 'Email sai định dạng';
 
       ToastAndroid.showWithGravity(
@@ -54,9 +54,9 @@ class LoginScreen extends PureComponent {
         ToastAndroid.SHORT,
         ToastAndroid.CENTER
       );
-      this.setState({isShowInputPassword: false})
+      this.setState({ isShowInputPassword: false })
     } else {
-      this.setState({isShowInputPassword: true})
+      this.setState({ isShowInputPassword: true })
     }
   }
 
@@ -75,10 +75,12 @@ class LoginScreen extends PureComponent {
         <View style={styles.inputEmailContainer}>
           <Image source={require('../../../assets/email/email.png')} style={styles.imgEmail}/>
           <TextInput style={styles.inputLogin} value={email} onChangeText={(e) => this._changeEmail(e)}/>
-          <TouchableWithoutFeedback onPress={() => this._checkEmail()}>
+
+          {!isShowInputPassword ? <TouchableWithoutFeedback onPress={() => this._checkEmail()}>
             <Image source={require('../../../assets/arrowRightRound/arrowRightRound.png')}
                    style={styles.imgArrowRight}/>
-          </TouchableWithoutFeedback>
+          </TouchableWithoutFeedback> : null}
+
         </View>
 
         {isShowInputPassword ? <View style={styles.inputPasswordContainer}>
@@ -88,10 +90,10 @@ class LoginScreen extends PureComponent {
                      secureTextEntry={true}
                      onChangeText={(p) => this._changePassword(p)}/>
           <TouchableWithoutFeedback onPress={() => this._checkEmail()}>
-            <Image source={require('../../../assets/arrowRightRound/arrowRightRound.png')}
-                   style={styles.imgArrowRight}/>
+            <Image source={require('../../../assets/enter/enter.png')}
+                   style={styles.imgEnter}/>
           </TouchableWithoutFeedback>
-        </View>: null}
+        </View> : null}
 
 
         <View style={styles.forgotContainer}>
@@ -115,6 +117,11 @@ class LoginScreen extends PureComponent {
           <Text style={styles.textGoogle}>Google</Text>
         </View>
 
+        <View style={styles.termContainer}>
+          <Text style={styles.textTerm}>Terms & Conditions <Text style={styles.dividerTerm}> | </Text> Policy
+            <Text style={styles.dividerTerm}>  | </Text> White Paper
+            <Text style={styles.dividerTerm}>  | </Text> Token Sale Agreements</Text>
+        </View>
       </View>
     )
   }
@@ -166,6 +173,9 @@ const styles = ScaledSheet.create({
     alignItems: 'center',
     borderRadius: '3@s',
     height: '40@s',
+    width: '295@s',
+    position: 'absolute',
+    top: '45%'
   },
   inputLogin: {
     flex: 1,
@@ -174,13 +184,13 @@ const styles = ScaledSheet.create({
   imgEmail: {
     width: '18@s',
     height: '12@s',
-    marginLeft: '18@s',
+    marginLeft: '13@s',
     marginRight: '18@s',
   },
   imgPadlock: {
     width: '11@s',
     height: '16@s',
-    marginLeft: '18@s',
+    marginLeft: '19@s',
     marginRight: '18@s',
   },
   imgArrowRight: {
@@ -188,14 +198,19 @@ const styles = ScaledSheet.create({
     height: '20@s',
     marginRight: '8@s'
   },
+  imgEnter: {
+    width: '16@s',
+    height: '16@s',
+    marginRight: '8@s'
+  },
   forgotContainer: {
     alignItems: 'center',
-    marginTop: '70@s'
+    marginTop: '12@s'
   },
   orContanier: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: '25@s'
+    marginTop: '14@s'
   },
   textForgotPassword: {
     fontSize: '13@s',
@@ -253,5 +268,23 @@ const styles = ScaledSheet.create({
     marginLeft: '22@s',
     width: '25@s',
     height: '23@s',
+  },
+  termContainer: {
+    flexDirection: 'row',
+    marginTop: '40@s',
+    position: 'absolute',
+    top: '89%',
+    alignItems: 'center'
+  },
+  textTerm: {
+    color: '#FFF',
+    textAlign: 'center',
+    marginLeft: '20@s',
+    fontSize: '10@s',
+    letterSpacing: '0.5@s',
+  },
+  dividerTerm: {
+    color: '#979797',
+    fontSize: '10@s',
   }
 });
