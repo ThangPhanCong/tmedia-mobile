@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { View, Text, Image, TextInput, TouchableOpacity } from 'react-native';
 import ScaledSheet from '../../libs/reactSizeMatter/ScaledSheet';
 
-class RegisterScreen extends PureComponent {
+class ForgotPasswordScreen extends PureComponent {
   static get options() {
     return {
       topBar: {
@@ -55,7 +55,7 @@ class RegisterScreen extends PureComponent {
   }
 }
 
-export default RegisterScreen;
+export default ForgotPasswordScreen;
 
 const styles = ScaledSheet.create({
   screen: {
