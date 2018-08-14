@@ -3,6 +3,7 @@ import { View, Text, Image, TextInput, TouchableWithoutFeedback, ToastAndroid } 
 import ScaledSheet from '../../libs/reactSizeMatter/ScaledSheet';
 import { scale } from '../../libs/reactSizeMatter/scalingUtils';
 import SwitchSelector from 'react-native-switch-selector';
+import * as Progress from 'react-native-progress';
 
 class IcoScreen extends PureComponent {
   static get options() {
@@ -64,6 +65,11 @@ class IcoScreen extends PureComponent {
                           onPress={value => console.log(`Call onPress with value: ${value}`)}/>
         </View>
 
+        <View>
+          <Image source={require('../../../assets/circleProgress/circleProgress.png')} style={styles.imgCircleProgress}/>
+          <Text style={styles.progressValue}>80</Text>
+          <Progress.Bar progress={0.8} width={315} />
+        </View>
       </View>
     )
   }
@@ -133,4 +139,16 @@ const styles = ScaledSheet.create({
     alignSelf: 'center',
     width: '200@s',
   },
+  imgCircleProgress: {
+    width: '31@s',
+    height: '40@s',
+    position: 'absolute',
+    left: '30@s'
+  },
+  progressValue: {
+    fontSize: '8@s',
+    position: 'absolute',
+    top: '10@s',
+    color: '#576574'
+  }
 });
