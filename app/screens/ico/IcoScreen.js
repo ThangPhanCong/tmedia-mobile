@@ -4,6 +4,7 @@ import ScaledSheet from '../../libs/reactSizeMatter/ScaledSheet';
 import { scale } from '../../libs/reactSizeMatter/scalingUtils';
 import SwitchSelector from 'react-native-switch-selector';
 import * as Progress from 'react-native-progress';
+import {Navigation} from 'react-native-navigation';
 
 class IcoScreen extends PureComponent {
   static get options() {
@@ -17,11 +18,6 @@ class IcoScreen extends PureComponent {
 
     };
   }
-
-  componentWillMount() {
-
-  }
-
   _renderDepositAddress() {
     return (
       <View style={styles.depositContainer}>
@@ -34,7 +30,6 @@ class IcoScreen extends PureComponent {
       </View>
     )
   }
-
 
   _renderEthAddress() {
     return (
@@ -380,7 +375,7 @@ const styles = ScaledSheet.create({
   },
   tableHistoryContainer: {
     flexDirection: 'column',
-    backgroundColor: '#FFF'
+    backgroundColor: '#FFF',
   },
   headerTable: {
     flexDirection: 'row',
