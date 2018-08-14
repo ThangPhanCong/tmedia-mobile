@@ -5,4 +5,5 @@ export function registerScreens() {
   Navigation.registerComponent('Register', () => require('./register/RegisterScreen').default);
   Navigation.registerComponent('ForgotPassword', () => require('./login/ForgotPasswordScreen').default);
   Navigation.registerComponent('Otp', () => require('./otp/OtpScreen').default);
+  Navigation.registerComponent('Ico', () => require('./ico/IcoScreen').default);
 }

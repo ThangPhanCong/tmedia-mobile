@@ -95,7 +95,8 @@ const styles = ScaledSheet.create({
     paddingRight: '15@s',
     borderBottomColor: '#E0E0E0',
     borderBottomWidth: '1@s',
-    fontSize: '13@s'
+    fontSize: '13@s',
+    fontFamily: 'Futura Book font'
   },
   signUpContainer: {
     height: '40@s',
@@ -111,7 +112,8 @@ const styles = ScaledSheet.create({
   },
   textSignUp: {
     fontSize: '16@s',
-    color: '#FFF'
+    color: '#FFF',
+    fontFamily: 'Futura Book font'
   },
   termContainer: {
     flexDirection: 'column',
@@ -126,6 +128,7 @@ const styles = ScaledSheet.create({
     marginLeft: '20@s',
     fontSize: '10@s',
     letterSpacing: '0.5@s',
+    fontFamily: 'Futura Heavy font'
   },
   textCreating: {
     color: '#FFF',
@@ -147,13 +150,15 @@ const styles = ScaledSheet.create({
     textAlign: 'center',
     fontSize: '20@s',
     lineHeight: '23@s',
+    fontFamily: 'Futura Book font'
   },
   title2: {
     textAlign: 'center',
     color: '#D8D8D8',
     fontSize: '15@s',
     lineHeight: '18@s',
-    marginTop: '10@s'
+    marginTop: '10@s',
+    fontFamily: 'Futura Book font'
   },
   imgEmail: {
     width: '17@s',
