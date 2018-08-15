@@ -71,3 +71,16 @@ export const goMain = () => Navigation.setRoot({
     }
   }
 });
+
+export const goQrCode = () => Navigation.showOverlay({
+  component: {
+    id:'overlayQrcode',
+    name: 'QrCode',
+    options: {
+      overlay: {
+        interceptTouchOutside: false
+      }
+    }
+  }
+});
+
