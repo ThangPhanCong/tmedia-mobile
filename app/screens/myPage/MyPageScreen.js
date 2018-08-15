@@ -34,303 +34,17 @@ export default class MyPageScreen extends PureComponent {
     }
   }
 
-  render() {
+  _renderShowVerifyPhone() {
     return (
-      <View style={styles.screenContainer}>
-        <Text style={styles.title}>dung.nguyen@sotatek.com</Text>
-        <ScrollView style={{paddingRight: scale(30)}}>
-          {
-            this.state.showVerifyPhone
-              ? (
-                <View style={styles.bigrow}>
-                  <View style={styles.titleRow}>
-                    <Text style={styles.nameType}>Phone</Text>
-                    <TouchableOpacity style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}
-                                      onPress={() => this.setState({ showVerifyPhone: false })}>
-                      <Text style={[styles.verifyStatus, { color: '#D0021B', flex: 1 }]}>Not verified</Text>
-                      <View style={{ marginLeft: scale(28) }}>
-                        <Image style={styles.arrowRight}
-                               source={require('../../../assets/arrow/arrowRight/Shape.png')}
-                        />
-                      </View>
-                    </TouchableOpacity>
-                  </View>
-
-                  <View style={styles.phoneInputContainer}>
-                    <Image style={styles.flagVietNam}
-                           source={require('../../../assets/flagVietnamese/VN.png')}/>
-                    <Text style={styles.codeVN}>+84</Text>
-                    <View style={{ flex: 1, borderBottomColor: '#E0E0E0', borderBottomWidth: scale(1) }}>
-                      <TextInput style={[styles.phoneInput, { paddingBottom: 0 }]}
-                                 keyboardType='numeric'
-                                 underlineColorAndroid='transparent'
-                        // value={password}
-                        // onChangeText={(p) => this._changePassword(p)}
-                      />
-                    </View>
-                  </View>
-
-                  <View style={[styles.phoneInputContainer, styles.smsInputContainer]}>
-                    <Text style={styles.smsCode}>SMS Code</Text>
-                    <View style={{ flex: 1 }}>
-                      <TextInput style={[styles.phoneInput, { textAlign: 'center', height: scale(40) }]}
-                                 keyboardType='numeric'
-                                 underlineColorAndroid='transparent'
-                        // value={password}
-                        // onChangeText={(p) => this._changePassword(p)}
-                      />
-                    </View>
-                  </View>
-
-                  <View style={styles.groupMpdalPhoneText}>
-                    <TouchableOpacity>
-                      <Text style={styles.buttonSms}>SMS Code</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.setState({ showVerifyPhone: false })}>
-                      <Text style={styles.buttonCancel}>Cancel</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity><Text style={[styles.buttonSms, { color: '#10AC84' }]}>OK</Text></TouchableOpacity>
-
-                  </View>
-                </View>
-              )
-              : (
-                <View style={styles.row}>
+      <View>
+        {
+          this.state.showVerifyPhone
+            ? (
+              <View style={styles.bigrow}>
+                <View style={styles.titleRow}>
                   <Text style={styles.nameType}>Phone</Text>
-                  {
-                    this.state.phoneVerified
-                      ? (
-                        <View style={{ flex: 3, flexDirection: 'row', alignItems: 'center' }}>
-                          <Text style={[styles.verifyStatus, { color: '#576574', flex: 1 }]}>+84 01234567890</Text>
-                          <Text style={[styles.verifyStatus, { color: '#10AC84', marginLeft: scale(40) }]}>Verified</Text>
-                        </View>
-                      )
-                      : (
-                        <TouchableOpacity style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}
-                                          onPress={() => this.setState({ showVerifyPhone: true })}>
-                          <Text style={[styles.verifyStatus, { color: '#D0021B', flex: 1 }]}>Not verified</Text>
-                          <View style={{ marginLeft: scale(28) }}>
-                            <Image style={styles.arrowDown}
-                                   source={require('../../../assets/arrow/arrowDown/Shape.png')}
-                            />
-                          </View>
-                        </TouchableOpacity>
-                      )
-                  }
-
-                </View>
-              )
-          }
-
-          {
-            this.state.showVerifyGoogleAuth
-              ? (
-                <View style={styles.bigrow}>
-                  <View style={styles.titleRow}>
-                    <Text style={styles.nameType}>Google Authenicator</Text>
-
-                    {
-                      this.state.googleVerified
-                        ? (
-                          <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-                            <Text style={[styles.verifyStatus, { color: '#576574', flex: 1 }]}/>
-                            <Text style={[styles.verifyStatus, { color: '#10AC84', marginLeft: scale(40) }]}>Verified</Text>
-                          </View>
-                        )
-                        : (
-                          <TouchableOpacity style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}
-                                            onPress={() => this.setState({ showVerifyGoogleAuth: false })}>
-                            <Text style={[styles.verifyStatus, { color: '#D0021B', flex: 1 }]}>Not verified</Text>
-                            <View style={{ marginLeft: scale(28) }}>
-                              <Image style={styles.arrowRight}
-                                     source={require('../../../assets/arrow/arrowRight/Shape.png')}
-                              />
-                            </View>
-                          </TouchableOpacity>
-                        )
-                    }
-                  </View>
-
-                  {
-                    this.state.googleVerified
-                      ? (
-                        <View/>
-                      )
-                      : (
-                        <View style={styles.qrCodeContainer}>
-                          <Image style={styles.qrCode}
-                                 source={require('../../../assets/qrCode/frame.png')}/>
-                        </View>
-                      )
-                  }
-
-                  <View style={[styles.phoneInputContainer, styles.smsInputContainer]}>
-                    <Text style={styles.smsCode}>Authenication code</Text>
-                    <View style={{ flex: 1 }}>
-                      <TextInput style={[styles.phoneInput, { textAlign: 'center', height: scale(40) }]}
-                                 keyboardType='numeric'
-                                 underlineColorAndroid='transparent'
-                        // value={password}
-                        // onChangeText={(p) => this._changePassword(p)}
-                      />
-                    </View>
-                  </View>
-
-                  <View style={[styles.groupMpdalPhoneText, { justifyContent: 'center' }]}>
-                    <TouchableOpacity style={{ marginRight: scale(15) }}
-                                      onPress={() => this.setState({ showVerifyGoogleAuth: false })}>
-                      <Text style={styles.buttonCancel}>Cancel</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={{ marginLeft: scale(15) }}>
-                      <Text style={[styles.buttonSms, { color: '#10AC84' }]}>OK</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              )
-              : (
-                <View style={styles.row}>
-                  <Text style={[styles.nameType, { flex: 3 }]}>Google Authenicator</Text>
-                  {
-                    this.state.googleAuthDisabled
-                      ? (
-                        <View style={{ flex: 3, flexDirection: 'row', alignItems: 'center' }}>
-                          <Text style={[styles.verifyStatus, { color: '#576574', flex: 1 }]}/>
-                          <Text style={[styles.verifyStatus, {
-                            color: '#576574',
-                            marginLeft: scale(40),
-                            fontFamily: 'Futura Heavy font'
-                          }]}>Disable</Text>
-                        </View>
-                      )
-                      : (
-                        <TouchableOpacity style={{ flex: 3, flexDirection: 'row', alignItems: 'center' }}
-                                          onPress={() => this.setState({ showVerifyGoogleAuth: true })}>
-                          <Text style={[styles.verifyStatus, { color: '#D0021B', flex: 4 }]}>Not verified</Text>
-                          <View style={{ marginLeft: scale(28) }}>
-                            <Image style={styles.arrowDown}
-                                   source={require('../../../assets/arrow/arrowDown/Shape.png')}
-                            />
-                          </View>
-                        </TouchableOpacity>
-                      )
-                  }
-
-                </View>
-              )
-          }
-
-          {
-            this.state.showChangePassWord
-              ? (
-                <View style={styles.bigrow}>
-                  <View style={styles.titleRow}>
-                    <Text style={styles.nameType}>Change password</Text>
-                    <TouchableOpacity style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}
-                                      onPress={() => this.setState({ showChangePassWord: false })}>
-                      <Text style={[styles.verifyStatus, { color: '#D0021B', flex: 1 }]}/>
-                      <View style={{ marginLeft: scale(28) }}>
-                        <Image style={styles.arrowRight}
-                               source={require('../../../assets/arrow/arrowRight/Shape.png')}
-                        />
-                      </View>
-                    </TouchableOpacity>
-                  </View>
-
-                  <View style={[styles.phoneInputContainer, styles.smsInputContainer]}>
-                    <Text style={[styles.smsCode, {flex: 1}]}>Current password</Text>
-                    <View style={{ flex: 1.5 }}>
-                      <TextInput style={[styles.phoneInput, {height: scale(40)}]}
-                                 underlineColorAndroid='transparent'
-                                 secureTextEntry={!this.state.showCurrentPassword}
-                        // value={password}
-                        // onChangeText={(p) => this._changePassword(p)}
-                      />
-                    </View>
-                    <TouchableOpacity
-                      onPressIn={() => this.setState({ showCurrentPassword: true })}
-                      onPressOut={() => this.setState({ showCurrentPassword: false })}>
-                      <Image style={styles.eye}
-                             source={require('../../../assets/eye/view.png')}/>
-
-                    </TouchableOpacity>
-                  </View>
-
-                  <View style={[styles.phoneInputContainer, styles.smsInputContainer]}>
-                    <Text style={[styles.smsCode, {flex: 1}]}>New password</Text>
-                    <View style={{ flex: 1.5 }}>
-                      <TextInput style={[styles.phoneInput, { height: scale(40) }]}
-                                 underlineColorAndroid='transparent'
-                                 secureTextEntry={!this.state.showNewPassword}
-                        // value={password}
-                        // onChangeText={(p) => this._changePassword(p)}
-                      />
-                    </View>
-                    <TouchableOpacity
-                      onPressIn={() => this.setState({ showNewPassword: true })}
-                      onPressOut={() => this.setState({ showNewPassword: false })}>
-                      <Image style={styles.eye}
-                             source={require('../../../assets/eye/view.png')}/>
-                    </TouchableOpacity>
-                  </View>
-
-                  <View style={[styles.phoneInputContainer, styles.smsInputContainer]}>
-                    <Text style={[styles.smsCode, {flex: 1}]}>Repeat password</Text>
-                    <View style={{ flex: 1.5 }}>
-                      <TextInput style={[styles.phoneInput, { height: scale(40) }]}
-                                 underlineColorAndroid='transparent'
-                                 secureTextEntry={!this.state.showRepeatPassWord}
-                        // value={password}
-                        // onChangeText={(p) => this._changePassword(p)}
-                      />
-                    </View>
-                    <TouchableOpacity
-                      onPressIn={() => this.setState({ showRepeatPassWord: true })}
-                      onPressOut={() => this.setState({ showRepeatPassWord: false })}>
-                      <Image style={styles.eye}
-                             source={require('../../../assets/eye/view.png')}/>
-                    </TouchableOpacity>
-                  </View>
-
-                  <View style={[styles.groupMpdalPhoneText, { justifyContent: 'center' }]}>
-                    <TouchableOpacity style={{ marginRight: scale(15) }}
-                                      onPress={() => this.setState({ showChangePassWord: false })}>
-                      <Text style={styles.buttonCancel}>Cancel</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={{ marginLeft: scale(15) }}>
-                      <Text style={[styles.buttonSms, { color: '#10AC84' }]}>OK</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              )
-              : (
-                <View style={styles.row}>
-                  <Text style={styles.nameType}>Change password</Text>
-                  <TouchableOpacity style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}
-                                    onPress={() => this.setState({ showChangePassWord: true })}>
-                    <Text style={[styles.verifyStatus, { color: '#D0021B', flex: 1 }]}/>
-                    <View style={{ marginLeft: scale(28) }}>
-                      <Image style={styles.arrowDown}
-                             source={require('../../../assets/arrow/arrowDown/Shape.png')}
-                      />
-                    </View>
-                  </TouchableOpacity>
-
-                </View>
-              )
-          }
-
-          <View style={styles.row}>
-            <Text style={styles.nameType}>KYC</Text>
-            {
-              this.state.KYCVerified
-                ? (
-                  <View style={{ flex: 3, flexDirection: 'row', alignItems: 'center' }}>
-                    <Text style={[styles.verifyStatus, { color: '#576574', flex: 1 }]}/>
-                    <Text style={[styles.verifyStatus, { color: '#10AC84', marginLeft: scale(40) }]}>Verified</Text>
-                  </View>
-                )
-                : (
-                  <TouchableOpacity style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+                  <TouchableOpacity style={styles.notVerified}
+                                    onPress={() => this.setState({ showVerifyPhone: false })}>
                     <Text style={[styles.verifyStatus, { color: '#D0021B', flex: 1 }]}>Not verified</Text>
                     <View style={{ marginLeft: scale(28) }}>
                       <Image style={styles.arrowRight}
@@ -338,10 +52,324 @@ export default class MyPageScreen extends PureComponent {
                       />
                     </View>
                   </TouchableOpacity>
-                )
-            }
+                </View>
 
-          </View>
+                <View style={styles.phoneInputContainer}>
+                  <Image style={styles.flagVietNam}
+                         source={require('../../../assets/flagVietnamese/VN.png')}/>
+                  <Text style={styles.codeVN}>+84</Text>
+                  <View style={{ flex: 1, borderBottomColor: '#E0E0E0', borderBottomWidth: scale(1) }}>
+                    <TextInput style={[styles.phoneInput, { paddingBottom: 0 }]}
+                               keyboardType='numeric'
+                               underlineColorAndroid='transparent'
+                      // value={password}
+                      // onChangeText={(p) => this._changePassword(p)}
+                    />
+                  </View>
+                </View>
+
+                <View style={[styles.phoneInputContainer, styles.smsInputContainer]}>
+                  <Text style={styles.smsCode}>SMS Code</Text>
+                  <View style={{ flex: 1 }}>
+                    <TextInput style={[styles.phoneInput, { textAlign: 'center', height: scale(40) }]}
+                               keyboardType='numeric'
+                               underlineColorAndroid='transparent'
+                      // value={password}
+                      // onChangeText={(p) => this._changePassword(p)}
+                    />
+                  </View>
+                </View>
+
+                <View style={styles.groupMpdalPhoneText}>
+                  <TouchableOpacity>
+                    <Text style={styles.buttonSms}>SMS Code</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => this.setState({ showVerifyPhone: false })}>
+                    <Text style={styles.buttonCancel}>Cancel</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity><Text style={[styles.buttonSms, { color: '#10AC84' }]}>OK</Text></TouchableOpacity>
+
+                </View>
+              </View>
+            )
+            : (
+              <View style={styles.row}>
+                <Text style={styles.nameType}>Phone</Text>
+                {
+                  this.state.phoneVerified
+                    ? (
+                      <View style={styles.notVerified3}>
+                        <Text style={[styles.verifyStatus, { color: '#576574', flex: 1 }]}>+84 01234567890</Text>
+                        <Text style={[styles.verifyStatus, { color: '#10AC84', marginLeft: scale(40) }]}>Verified</Text>
+                      </View>
+                    )
+                    : (
+                      <TouchableOpacity style={styles.notVerified}
+                                        onPress={() => this.setState({ showVerifyPhone: true })}>
+                        <Text style={[styles.verifyStatus, { color: '#D0021B', flex: 1 }]}>Not verified</Text>
+                        <View style={{ marginLeft: scale(28) }}>
+                          <Image style={styles.arrowDown}
+                                 source={require('../../../assets/arrow/arrowDown/Shape.png')}
+                          />
+                        </View>
+                      </TouchableOpacity>
+                    )
+                }
+              </View>
+            )
+        }
+      </View>
+    )
+  }
+
+  __renderShowVerifyGoogleAuth() {
+    return (
+      <View>
+        {
+          this.state.showVerifyGoogleAuth
+            ? (
+              <View style={styles.bigrow}>
+                <View style={styles.titleRow}>
+                  <Text style={styles.nameType}>Google Authenicator</Text>
+
+                  {
+                    this.state.googleVerified
+                      ? (
+                        <View style={styles.notVerified}>
+                          <Text style={[styles.verifyStatus, { color: '#576574', flex: 1 }]}/>
+                          <Text style={[styles.verifyStatus, { color: '#10AC84', marginLeft: scale(40) }]}>Verified</Text>
+                        </View>
+                      )
+                      : (
+                        <TouchableOpacity style={styles.notVerified}
+                                          onPress={() => this.setState({ showVerifyGoogleAuth: false })}>
+                          <Text style={[styles.verifyStatus, { color: '#D0021B', flex: 1 }]}>Not verified</Text>
+                          <View style={{ marginLeft: scale(28) }}>
+                            <Image style={styles.arrowRight}
+                                   source={require('../../../assets/arrow/arrowRight/Shape.png')}
+                            />
+                          </View>
+                        </TouchableOpacity>
+                      )
+                  }
+                </View>
+
+                {
+                  this.state.googleVerified
+                    ? (
+                      <View/>
+                    )
+                    : (
+                      <View style={styles.qrCodeContainer}>
+                        <Image style={styles.qrCode}
+                               source={require('../../../assets/qrCode/frame.png')}/>
+                      </View>
+                    )
+                }
+
+                <View style={[styles.phoneInputContainer, styles.smsInputContainer]}>
+                  <Text style={styles.smsCode}>Authenication code</Text>
+                  <View style={{ flex: 1 }}>
+                    <TextInput style={[styles.phoneInput, { textAlign: 'center', height: scale(40) }]}
+                               keyboardType='numeric'
+                               underlineColorAndroid='transparent'
+                      // value={password}
+                      // onChangeText={(p) => this._changePassword(p)}
+                    />
+                  </View>
+                </View>
+
+                <View style={[styles.groupMpdalPhoneText, { justifyContent: 'center' }]}>
+                  <TouchableOpacity style={{ marginRight: scale(15) }}
+                                    onPress={() => this.setState({ showVerifyGoogleAuth: false })}>
+                    <Text style={styles.buttonCancel}>Cancel</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={{ marginLeft: scale(15) }}>
+                    <Text style={[styles.buttonSms, { color: '#10AC84' }]}>OK</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )
+            : (
+              <View style={styles.row}>
+                <Text style={[styles.nameType, { flex: 3 }]}>Google Authenicator</Text>
+                {
+                  this.state.googleAuthDisabled
+                    ? (
+                      <View style={styles.notVerified3}>
+                        <Text style={[styles.verifyStatus, { color: '#576574', flex: 1 }]}/>
+                        <Text style={[styles.verifyStatus, {
+                          color: '#576574',
+                          marginLeft: scale(40),
+                          fontFamily: 'Futura Heavy font'
+                        }]}>Disable</Text>
+                      </View>
+                    )
+                    : (
+                      <TouchableOpacity style={styles.notVerified3}
+                                        onPress={() => this.setState({ showVerifyGoogleAuth: true })}>
+                        <Text style={[styles.verifyStatus, { color: '#D0021B', flex: 4 }]}>Not verified</Text>
+                        <View style={{ marginLeft: scale(28) }}>
+                          <Image style={styles.arrowDown}
+                                 source={require('../../../assets/arrow/arrowDown/Shape.png')}
+                          />
+                        </View>
+                      </TouchableOpacity>
+                    )
+                }
+
+              </View>
+            )
+        }
+      </View>
+    )
+  }
+
+  __renderShowChangePassWord() {
+    return (
+      <View>
+        {
+          this.state.showChangePassWord
+            ? (
+              <View style={styles.bigrow}>
+                <View style={styles.titleRow}>
+                  <Text style={styles.nameType}>Change password</Text>
+                  <TouchableOpacity style={styles.notVerified}
+                                    onPress={() => this.setState({ showChangePassWord: false })}>
+                    <Text style={[styles.verifyStatus, { color: '#D0021B', flex: 1 }]}/>
+                    <View style={{ marginLeft: scale(28) }}>
+                      <Image style={styles.arrowRight}
+                             source={require('../../../assets/arrow/arrowRight/Shape.png')}
+                      />
+                    </View>
+                  </TouchableOpacity>
+                </View>
+
+                <View style={[styles.phoneInputContainer, styles.smsInputContainer]}>
+                  <Text style={[styles.smsCode, { flex: 1 }]}>Current password</Text>
+                  <View style={{ flex: 1.5 }}>
+                    <TextInput style={[styles.phoneInput, { height: scale(40) }]}
+                               underlineColorAndroid='transparent'
+                               secureTextEntry={!this.state.showCurrentPassword}
+                      // value={password}
+                      // onChangeText={(p) => this._changePassword(p)}
+                    />
+                  </View>
+                  <TouchableOpacity
+                    onPressIn={() => this.setState({ showCurrentPassword: true })}
+                    onPressOut={() => this.setState({ showCurrentPassword: false })}>
+                    <Image style={styles.eye}
+                           source={require('../../../assets/eye/view.png')}/>
+
+                  </TouchableOpacity>
+                </View>
+
+                <View style={[styles.phoneInputContainer, styles.smsInputContainer]}>
+                  <Text style={[styles.smsCode, { flex: 1 }]}>New password</Text>
+                  <View style={{ flex: 1.5 }}>
+                    <TextInput style={[styles.phoneInput, { height: scale(40) }]}
+                               underlineColorAndroid='transparent'
+                               secureTextEntry={!this.state.showNewPassword}
+                      // value={password}
+                      // onChangeText={(p) => this._changePassword(p)}
+                    />
+                  </View>
+                  <TouchableOpacity
+                    onPressIn={() => this.setState({ showNewPassword: true })}
+                    onPressOut={() => this.setState({ showNewPassword: false })}>
+                    <Image style={styles.eye}
+                           source={require('../../../assets/eye/view.png')}/>
+                  </TouchableOpacity>
+                </View>
+
+                <View style={[styles.phoneInputContainer, styles.smsInputContainer]}>
+                  <Text style={[styles.smsCode, { flex: 1 }]}>Repeat password</Text>
+                  <View style={{ flex: 1.5 }}>
+                    <TextInput style={[styles.phoneInput, { height: scale(40) }]}
+                               underlineColorAndroid='transparent'
+                               secureTextEntry={!this.state.showRepeatPassWord}
+                      // value={password}
+                      // onChangeText={(p) => this._changePassword(p)}
+                    />
+                  </View>
+                  <TouchableOpacity
+                    onPressIn={() => this.setState({ showRepeatPassWord: true })}
+                    onPressOut={() => this.setState({ showRepeatPassWord: false })}>
+                    <Image style={styles.eye}
+                           source={require('../../../assets/eye/view.png')}/>
+                  </TouchableOpacity>
+                </View>
+
+                <View style={[styles.groupMpdalPhoneText, { justifyContent: 'center' }]}>
+                  <TouchableOpacity style={{ marginRight: scale(15) }}
+                                    onPress={() => this.setState({ showChangePassWord: false })}>
+                    <Text style={styles.buttonCancel}>Cancel</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={{ marginLeft: scale(15) }}>
+                    <Text style={[styles.buttonSms, { color: '#10AC84' }]}>OK</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )
+            : (
+              <View style={styles.row}>
+                <Text style={styles.nameType}>Change password</Text>
+                <TouchableOpacity style={styles.notVerified}
+                                  onPress={() => this.setState({ showChangePassWord: true })}>
+                  <Text style={[styles.verifyStatus, { color: '#D0021B', flex: 1 }]}/>
+                  <View style={{ marginLeft: scale(28) }}>
+                    <Image style={styles.arrowDown}
+                           source={require('../../../assets/arrow/arrowDown/Shape.png')}
+                    />
+                  </View>
+                </TouchableOpacity>
+
+              </View>
+            )
+        }
+      </View>
+    )
+  }
+
+  _renderShowKYC() {
+    return (
+      <View>
+        <View style={styles.row}>
+          <Text style={styles.nameType}>KYC</Text>
+          {
+            this.state.KYCVerified
+              ? (
+                <View style={styles.notVerified3}>
+                  <Text style={[styles.verifyStatus, { color: '#576574', flex: 1 }]}/>
+                  <Text style={[styles.verifyStatus, { color: '#10AC84', marginLeft: scale(40) }]}>Verified</Text>
+                </View>
+              )
+              : (
+                <TouchableOpacity style={styles.notVerified}>
+                  <Text style={[styles.verifyStatus, { color: '#D0021B', flex: 1 }]}>Not verified</Text>
+                  <View style={{ marginLeft: scale(28) }}>
+                    <Image style={styles.arrowRight}
+                           source={require('../../../assets/arrow/arrowRight/Shape.png')}
+                    />
+                  </View>
+                </TouchableOpacity>
+              )
+          }
+
+        </View>
+      </View>
+    )
+  }
+
+  render() {
+    return (
+      <View style={styles.screenContainer}>
+        <Text style={styles.title}>dung.nguyen@sotatek.com</Text>
+        <ScrollView style={{ paddingRight: scale(30) }}>
+          {this._renderShowVerifyPhone()}
+          {this.__renderShowVerifyGoogleAuth()}
+          {this.__renderShowChangePassWord()}
+          {this._renderShowKYC()}
         </ScrollView>
       </View>
     )
@@ -475,5 +503,15 @@ const styles = ScaledSheet.create({
   eye: {
     width: '18@s',
     height: '11@s'
+  },
+  notVerified: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  notVerified3: {
+    flex: 3,
+    flexDirection: 'row',
+    alignItems: 'center'
   }
 });
