@@ -50,7 +50,7 @@ export const goMain = () => Navigation.setRoot({
         },
         {
           component: {
-            name: 'Register',
+            name: 'MyPage',
             passProps: {
               text: 'This is tab 2'
             },
