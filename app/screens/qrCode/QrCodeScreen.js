@@ -19,7 +19,7 @@ class QrCodeScreen extends PureComponent {
     return (
       <TouchableWithoutFeedback onPress={() => Navigation.dismissOverlay(this.props.componentId)}>
         <View style={styles.screen}>
-          <Image resizeMode={'contain'} source={require('../../../assets/qrCode/frame.png')} style={styles.imgQrcode}/>
+          <Image resizeMode={'contain'} source={require('../../../assets/qrCodeIco/frame.png')} style={styles.imgQrcode}/>
         </View>
       </TouchableWithoutFeedback>
 
