@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { View, Text, Image, TextInput, TouchableWithoutFeedback, ToastAndroid } from 'react-native';
 import ScaledSheet from '../../libs/reactSizeMatter/ScaledSheet';
 import { Navigation } from 'react-native-navigation';
+import {goMain} from '../navigation';
 
 class LoginScreen extends PureComponent {
   state = {
@@ -66,16 +67,7 @@ class LoginScreen extends PureComponent {
   }
 
   _loginFacebook() {
-    Navigation.setStackRoot(this.props.componentId, {
-      component: {
-        name: 'Main',
-        passProps: {
-          text: 'Pushed screen'
-        },
-        options: {
-        }
-      }
-    });
+    goMain();
   }
 
   render() {

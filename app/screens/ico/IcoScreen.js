@@ -4,7 +4,6 @@ import ScaledSheet from '../../libs/reactSizeMatter/ScaledSheet';
 import { scale } from '../../libs/reactSizeMatter/scalingUtils';
 import SwitchSelector from 'react-native-switch-selector';
 import * as Progress from 'react-native-progress';
-import {Navigation} from 'react-native-navigation';
 
 class IcoScreen extends PureComponent {
   static get options() {
