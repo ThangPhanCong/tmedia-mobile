@@ -8,10 +8,15 @@
     "test": "jest"
   },
   "dependencies": {
+    "buffer": "^5.2.0",
     "react": "16.4.1",
     "react-native": "0.56.0",
+    "react-native-country-picker-modal": "^0.6.2",
+    "react-native-device-info": "^0.11.0",
+    "react-native-image-crop-picker": "^0.20.3",
     "react-native-navigation": "^2.0.2461",
     "react-native-progress": "^3.5.0",
+    "react-native-snap-carousel": "^3.7.2",
     "react-native-switch-selector": "^1.1.8"
   },
   "devDependencies": {
