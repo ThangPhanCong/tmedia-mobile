@@ -18,11 +18,20 @@ import Carousel from 'react-native-snap-carousel';
 import { goQrCode } from "../navigation";
 import ImagePicker from 'react-native-image-crop-picker';
 import Buffer from 'buffer';
+import { scale } from "../../libs/reactSizeMatter/scalingUtils";
+
 const { width } = Dimensions.get('window');
 
 const NORTH_AMERICA = ListCountry;
 
-class KycScreen extends PureComponent {
+class KycScreen extends React.Component {
+
+  static TYPE_IMAGE = {
+    DEFAULT: 'default',
+    CAMERA: 'camera',
+    GALLERY: 'gallery'
+  }
+
   constructor(props) {
     super(props);
     let userLocaleCountryCode = DeviceInfo.getDeviceCountry();
@@ -44,9 +53,23 @@ class KycScreen extends PureComponent {
       cca2,
       callingCode,
       entries: [
-        { id: 1, title: 'Identity Card Front Side / Passport cover', name: require('../../../assets/idCard/id-card.png') },
-        { id: 2, title: 'Identity Card Black Side / Passport cover', name: require('../../../assets/idCard/id-card.png') },
-        { id: 3, title: 'Selfie With Photo ID And Note', name: require('../../../assets/idCard/id-card.png') }
+        {
+          id: 1,
+          title: 'Identity Card Front Side / Passport cover',
+          name: require('../../../assets/idCard/id-card.png'),
+          type: KycScreen.TYPE_IMAGE.DEFAULT
+        },
+        {
+          id: 2,
+          title: 'Identity Card Black Side / Passport cover',
+          name: require('../../../assets/idCard/id-card.png'),
+          type: KycScreen.TYPE_IMAGE.DEFAULT
+        },
+        {
+          id: 3, title: 'Selfie With Photo ID And Note',
+          name: require('../../../assets/idCard/id-card.png'),
+          type: KycScreen.TYPE_IMAGE.DEFAULT
+        }
       ]
     }
   }
@@ -65,14 +88,16 @@ class KycScreen extends PureComponent {
   async _pickImageCamera(index) {
     try {
       const image = await ImagePicker.openCamera({
-        width: 300,
-        height: 400,
+        width: scale(265),
+        height: scale(141),
         cropping: true,
-        includeBase64: true,
         freeStyleCropEnabled: true,
       });
 
-      console.log("image:", image)
+      const { entries } = this.state;
+      entries[index] = { ...entries[index], ...{ name: { uri: image.path } }, ...{ type: KycScreen.TYPE_IMAGE.CAMERA } };
+
+      this.setState({ entries });
     } catch (err) {
       console.log("Camera._error:", err.message)
     }
@@ -81,17 +106,16 @@ class KycScreen extends PureComponent {
   async _pickImageGallery(index) {
     try {
       const image = await ImagePicker.openPicker({
-        width: 300,
-        height: 400,
-        cropping: true
+        width: scale(265),
+        height: scale(141),
+        cropping: true,
+        freeStyleCropEnabled: true,
       });
 
-      const {entries} = this.state;
-      entries[0] = {...entries[0], ...{name: require('../../../assets/qrCode/qr-code.png')}};
+      const { entries } = this.state;
+      entries[index] = { ...entries[index], ...{ name: { uri: image.path } }, ...{ type: KycScreen.TYPE_IMAGE.GALLERY } };
 
-      console.log("hihi", entries)
-      this.setState({entries})
-      console.log("image:", image)
+      this.setState({ entries });
     } catch (err) {
       console.log("Gallery._error:", err.message)
     }
@@ -101,14 +125,22 @@ class KycScreen extends PureComponent {
   _renderItemAvatarUser({ item, index }) {
     return (
       <View style={styles.slide}>
-        <Image source={item.name}/>
-        <Text style={styles.titleSlide}>{item.title}</Text>
+        <Image source={item.name} key={item.name} style={styles.imgAvatar}
+               resizeMode={'stretch'}/>
+
+        <View style={styles.viewSlide}>
+          <Text style={styles.titleSlide}>{item.title}</Text>
+          {
+            item.type !== KycScreen.TYPE_IMAGE.DEFAULT ?
+              <Image source={require('../../../assets/selectedAvatar/finish.png')} style={styles.imgSelectedAvatar}/> : null
+          }
+        </View>
 
         <View style={styles.chooseImage}>
           <TouchableWithoutFeedback onPress={() => this._pickImageCamera(index)}>
-              <View>
-                <Image source={require('../../../assets/camera/camera.png')} style={styles.imgCamera}/>
-              </View>
+            <View>
+              <Image source={require('../../../assets/camera/camera.png')} style={styles.imgCamera}/>
+            </View>
           </TouchableWithoutFeedback>
 
           <TouchableWithoutFeedback onPress={() => this._pickImageGallery(index)}>
@@ -122,16 +154,20 @@ class KycScreen extends PureComponent {
   }
 
   _renderAvatarUser() {
+    const { entries } = this.state;
+
     return (
-      <Carousel
-        // ref={(c) => {
-        //   this._carousel = c;
-        // }}
-        data={this.state.entries}
-        renderItem={this._renderItemAvatarUser.bind(this)}
-        sliderWidth={width}
-        itemWidth={265}
-      />
+      <View style={styles.carouselContainer}>
+        <Carousel
+          ref={(c) => {
+            this._carousel = c;
+          }}
+          data={entries}
+          renderItem={this._renderItemAvatarUser.bind(this)}
+          sliderWidth={width}
+          itemWidth={265}
+        />
+      </View>
     )
   }
 
@@ -187,7 +223,7 @@ class KycScreen extends PureComponent {
         </View>
 
         <View>
-          <TouchableOpacity>
+          <TouchableOpacity style={styles.viewSubmit}>
             <View>
               <Text style={styles.textSubmit}>SUBMIT</Text>
             </View>
@@ -277,10 +313,11 @@ const styles = ScaledSheet.create({
     fontFamily: 'Futura Light Regular',
     marginTop: '5@s'
   },
+  viewSubmit: {
+    marginTop: '30@s',
+  },
   textSubmit: {
     textAlign: 'center',
-    marginTop: '50@s',
-    marginBottom: '20@s',
     color: '#10AC84',
     fontSize: '16@s'
   },
@@ -301,6 +338,7 @@ const styles = ScaledSheet.create({
   formCity: {
     flexDirection: 'row',
     flex: 2,
+    marginRight: '11@s',
     borderBottomColor: '#E0E0E0',
     borderBottomWidth: '1@s',
     alignItems: 'center'
@@ -308,6 +346,7 @@ const styles = ScaledSheet.create({
   formPostal: {
     flexDirection: 'row',
     flex: 1,
+    marginLeft: '11@s',
     borderBottomColor: '#E0E0E0',
     borderBottomWidth: '1@s',
     alignItems: 'center'
@@ -315,12 +354,17 @@ const styles = ScaledSheet.create({
   slide: {
     flexDirection: 'column',
     justifyContent: 'center',
-    marginTop: '23@s'
+    marginTop: '23@s',
+  },
+  viewSlide: { 
+    flexDirection: 'row',
+    justifyContent: 'center'
   },
   titleSlide: {
     fontSize: '13@s',
     color: '#576574',
     textAlign: 'center',
+    marginTop: '15@s',
     fontFamily: 'Futura Light Regular'
   },
   imgQrcode: {
@@ -342,5 +386,21 @@ const styles = ScaledSheet.create({
     width: '23@s',
     height: '20@s',
     marginTop: '13@s',
+    marginRight: '15@s',
+    marginBottom: '11@s',
+  },
+  imgAvatar: {
+    width: '265@s',
+    height: '141@s'
+  },
+  carouselContainer: {
+    borderBottomColor: 'rgba(0, 0, 0, 0.3)',
+    borderBottomWidth: '1@s'
+  },
+  imgSelectedAvatar: {
+    width: '16@s',
+    height: '12@s',
+    marginTop: '15@s',
+    marginLeft: '4@s'
   }
 });
