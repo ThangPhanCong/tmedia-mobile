@@ -28,7 +28,6 @@ class IcoScreen extends PureComponent {
   }
 
   _changeAddressETH(ethAddress) {
-
     this.setState({ ethAddress });
   }
 
@@ -60,7 +59,24 @@ class IcoScreen extends PureComponent {
   }
 
   _renderEthAddress() {
-    const { isShowInputEthAddress } = this.state;
+    const { isShowInputEthAddress, ethAddress } = this.state;
+    const conditionEthAddress = !ethAddress ? <View>
+      <Text style={styles.titleEth}>Your ETH Address</Text>
+
+      <View style={styles.qrCodeContainer}>
+        <Text style={styles.qrCode}>You have no ETH Address</Text>
+        <TouchableWithoutFeedback onPress={() => this._showInputAddressEth()}>
+          <View>
+            <Text style={styles.addQrcode}>Add</Text>
+          </View>
+        </TouchableWithoutFeedback>
+      </View>
+    </View> : <View>
+      <Text style={styles.titleEth}>Your ETH Address</Text>
+      <View style={styles.qrCodeContainer}>
+        <Text style={styles.qrCode}>1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX</Text>
+      </View>
+    </View>;
 
     return (
       <View style={styles.ethContainer}>
@@ -82,19 +98,7 @@ class IcoScreen extends PureComponent {
               </View>
             </TouchableWithoutFeedback>
           </View>
-        </View> : <View>
-          <Text style={styles.titleEth}>Your ETH Address</Text>
-
-          <View style={styles.qrCodeContainer}>
-            <Text style={styles.qrCode}>1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX</Text>
-            <TouchableWithoutFeedback onPress={() => this._showInputAddressEth()}>
-              <View>
-                <Text style={styles.addQrcode}>Add</Text>
-              </View>
-            </TouchableWithoutFeedback>
-
-          </View>
-        </View>
+        </View> : conditionEthAddress
         }
       </View>
     )
@@ -244,8 +248,8 @@ class IcoScreen extends PureComponent {
 
 export default IcoScreen;
 
-const positionRight = (315 - (1 - 0.8) * 315) + 22;
-const positionRightValue = (315 - (1 - 0.8) * 315) + 28;
+const positionRight = (315 - (1 - 0.8) * 315) + 20;
+const positionRightValue = (315 - (1 - 0.8) * 315) + 26;
 
 const styles = ScaledSheet.create({
   screen: {
@@ -363,7 +367,9 @@ const styles = ScaledSheet.create({
     fontFamily: 'Futura Light Regular',
     color: '#576574',
     flex: 1,
-    marginLeft: '10@s'
+    marginLeft: '10@s',
+    marginBottom: '10@s',
+    textAlign: 'center'
   },
   imgQrcode: {
     width: '21@s',
