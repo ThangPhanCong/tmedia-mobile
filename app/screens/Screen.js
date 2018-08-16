@@ -8,4 +8,5 @@ export function registerScreens() {
   Navigation.registerComponent('Ico', () => require('./ico/IcoScreen').default);
   Navigation.registerComponent('MyPage', () => require('./myPage/MyPageScreen').default);
   Navigation.registerComponent('Wallet', () => require('./wallet/WalletScreen').default);
+  Navigation.registerComponent('QrCode', () => require('./qrCode/QrCodeScreen').default);
 }

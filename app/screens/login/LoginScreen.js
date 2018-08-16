@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import { View, Text, Image, TextInput, TouchableWithoutFeedback, ToastAndroid } from 'react-native';
 import ScaledSheet from '../../libs/reactSizeMatter/ScaledSheet';
+import { Navigation } from 'react-native-navigation';
+import {goMain} from '../navigation';
 
 class LoginScreen extends PureComponent {
   state = {
@@ -8,12 +10,16 @@ class LoginScreen extends PureComponent {
     password: null,
     isShowInputPassword: false
   };
-
   messageEmailError: '';
 
   static get options() {
     return {
       topBar: {
+        drawBehind: true,
+        visible: false,
+        animate: false
+      },
+      bottomTabs: {
         drawBehind: true,
         visible: false,
         animate: false
@@ -58,6 +64,10 @@ class LoginScreen extends PureComponent {
     } else {
       this.setState({ isShowInputPassword: true })
     }
+  }
+
+  _loginFacebook() {
+    goMain();
   }
 
   render() {
@@ -107,10 +117,13 @@ class LoginScreen extends PureComponent {
           </View>
         </View>
 
-        <View style={styles.facebookContainer}>
-          <Image source={require('../../../assets/facebook/facebook.png')} style={styles.imgFacebook}/>
-          <Text style={styles.textFacebook}>Facebook</Text>
-        </View>
+        <TouchableWithoutFeedback  onPress={() => this._loginFacebook()}>
+          <View style={styles.facebookContainer}>
+            <Image source={require('../../../assets/facebook/facebook.png')} style={styles.imgFacebook}/>
+            <Text style={styles.textFacebook}>Facebook</Text>
+          </View>
+        </TouchableWithoutFeedback>
+
 
         <View style={styles.googleContainer}>
           <Image source={require('../../../assets/google/google.png')} style={styles.imgGoogle}/>
@@ -175,7 +188,7 @@ const styles = ScaledSheet.create({
     height: '40@s',
     width: '295@s',
     position: 'absolute',
-    top: '45%'
+    top: '48%'
   },
   inputLogin: {
     flex: 1,
@@ -205,7 +218,7 @@ const styles = ScaledSheet.create({
   },
   forgotContainer: {
     alignItems: 'center',
-    marginTop: '12@s'
+    marginTop: '40@s'
   },
   orContanier: {
     flexDirection: 'row',
