@@ -4,6 +4,8 @@ import ScaledSheet from '../../libs/reactSizeMatter/ScaledSheet';
 import { scale } from "../../libs/reactSizeMatter/scalingUtils";
 import { Card } from 'react-native-elements';
 import Modal from 'react-native-modal';
+import ModalDropdown from 'react-native-modal-dropdown';
+import { map } from 'lodash';
 
 export default class OtpScreen extends PureComponent {
   static get options() {
@@ -16,30 +18,34 @@ export default class OtpScreen extends PureComponent {
     };
   }
 
+  listCoin = ['BTC', 'ETH', 'ABC'];
+
   constructor(props) {
     super(props);
     this.state = {
       showSendCoin: false,
       showNewWallet: false,
       showMain2: false,
-      showListCoin: false,
-      value: 10
-    }
+      showListCoin: true,
+      value: 10,
+      selectedCoinType: this.listCoin[0]
+    };
+
   }
 
-  _renderSenCoin(){
-    return(
+  _renderSenCoin() {
+    return (
       <View>
         {
           this.state.showSendCoin
             ? (
-              <View style={[styles.bigRow, {paddingLeft: 0}]}>
-                <View style={[styles.titleRow, {marginLeft: scale(20)}]}>
+              <View style={[styles.bigRow, { paddingLeft: 0 }]}>
+                <View style={[styles.titleRow, { marginLeft: scale(20) }]}>
                   <Text style={styles.nameType}>Main</Text>
                   <Text style={styles.numberCoin}>1.25 BTC</Text>
                 </View>
 
-                <View style={[styles.rowInput, {marginLeft: scale(20)}]}>
+                <View style={[styles.rowInput, { marginLeft: scale(20) }]}>
                   <Text style={[styles.secretCode, { flex: 1 }]}>Secret code</Text>
                   <View style={{ flex: 2.1 }}>
                     <TextInput style={styles.phoneInput}
@@ -52,7 +58,7 @@ export default class OtpScreen extends PureComponent {
                   </View>
                 </View>
 
-                <View style={[styles.rowInput, {marginLeft: scale(20)}]}>
+                <View style={[styles.rowInput, { marginLeft: scale(20) }]}>
                   <Text style={[styles.secretCode, { flex: 1 }]}>Destination Address</Text>
                   <View style={{ flex: 1.3 }}>
                     <TextInput style={styles.phoneInput}
@@ -69,7 +75,7 @@ export default class OtpScreen extends PureComponent {
                   </TouchableOpacity>
                 </View>
 
-                <View style={[styles.rowInput, {marginLeft: scale(20)}]}>
+                <View style={[styles.rowInput, { marginLeft: scale(20) }]}>
                   <Text style={[styles.secretCode, { flex: 1 }]}>Amount</Text>
                   <View style={{ flex: 3 }}>
                     <TextInput style={styles.phoneInput}
@@ -81,7 +87,7 @@ export default class OtpScreen extends PureComponent {
                   </View>
                 </View>
 
-                <View style={[styles.rowInput, {marginLeft: scale(20)}]}>
+                <View style={[styles.rowInput, { marginLeft: scale(20) }]}>
                   <Text style={[styles.secretCode, { flex: 1 }]}>Fee</Text>
                   <View style={{ flex: 1.5 }}>
                     <Text style={[styles.secretCode, { textAlign: 'right', paddingRight: scale(10) }]}>0.00007
@@ -97,10 +103,10 @@ export default class OtpScreen extends PureComponent {
                     maximumValue={100}
                     value={this.state.value}
                     onValueChange={val => this.setState({ value: val })}
-                    onSlidingComplete={ val => this.setState({ value: val })}
-                    minimumTrackTintColor = {'#838B94'}
-                    thumbTintColor = {'#576574'}
-                    maximumTrackTintColor = {'#838B94'}
+                    onSlidingComplete={val => this.setState({ value: val })}
+                    minimumTrackTintColor={'#838B94'}
+                    thumbTintColor={'#576574'}
+                    maximumTrackTintColor={'#838B94'}
                   />
                 </View>
 
@@ -130,8 +136,8 @@ export default class OtpScreen extends PureComponent {
     )
   }
 
-  _renderMain2(){
-    return(
+  _renderMain2() {
+    return (
       <View>
         {
           this.state.showMain2
@@ -162,7 +168,7 @@ export default class OtpScreen extends PureComponent {
                   <Text style={[styles.privateKey, { width: scale(275) }]}>1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX</Text>
                   <View style={styles.qrCodeContainer}>
                     <Image style={styles.qrCode}
-                           source={require('../../../assets/qrCode/frame.png')} />
+                           source={require('../../../assets/qrCode/frame.png')}/>
                   </View>
                 </View>
 
@@ -190,8 +196,8 @@ export default class OtpScreen extends PureComponent {
     )
   }
 
-  _renderAddNewWallet(){
-    return(
+  _renderAddNewWallet() {
+    return (
       <View>
         {
           this.state.showNewWallet
@@ -207,7 +213,7 @@ export default class OtpScreen extends PureComponent {
                   </TouchableOpacity>
                 </View>
 
-                <View style={[styles.rowInput, {marginLeft: scale(20)}]}>
+                <View style={[styles.rowInput, { marginLeft: scale(20) }]}>
                   <Text style={[styles.secretCode, { flex: 1 }]}>Secret code</Text>
                   <View style={{ flex: 2.1 }}>
                     <TextInput style={styles.phoneInput}
@@ -224,7 +230,7 @@ export default class OtpScreen extends PureComponent {
                   <Text style={styles.notice}>Remember: Back up this secret code.</Text>
                 </View>
 
-                <View style={[styles.rowInput, {marginLeft: scale(20)}]}>
+                <View style={[styles.rowInput, { marginLeft: scale(20) }]}>
                   <Text style={[styles.secretCode, { flex: 1 }]}>Name</Text>
                   <View style={{ flex: 3 }}>
                     <TextInput style={styles.phoneInput}
@@ -258,19 +264,75 @@ export default class OtpScreen extends PureComponent {
     )
   }
 
-  _renderListCoin(){
+  _renderListCoin() {
     return (
       <Modal
+        animationIn = {'fadeIn'}
+        animationOut ={'fadeOut'}
         isVisible={this.state.showListCoin}
         avoidKeyboard={true}
         useNativeDriver={true}
         backdropColor='transparent'
-        onBackButtonPress={this.setState({showListCoin: false})}
-        onBackdropPress={this.setState({showListCoin: false}))}>
-        <Card>
+        onBackButtonPress={() => this.hideModalListCoin()}
+        onBackdropPress={() => this.hideModalListCoin()}
+        style={styles.modalDropdown}>
+        <Card containerStyle={styles.cardListCoin}>
+          {
+            this._generateOptionList()
+          }
         </Card>
       </Modal>
     )
+  }
+
+  hideModalListCoin() {
+    this.setState({ showListCoin: false })
+  }
+
+  _onCoinPickerSelect(index) {
+    console.log('aaaaaaaaaaa', index)
+    let selectedCoinType = this.listCoin[index];
+    this.setState({ selectedCoinType, showListCoin: false });
+  }
+
+  _onShowCoinListDropdown() {
+    this._coinDropDown.show();
+  }
+
+  _renderRowInModal(index, text, iconCoin) {
+    return (
+      <View key={index} style={this.listCoin[index] === this.state.selectedCoinType ? {backgroundColor: '#E0E0E0'} : {}}>
+        <TouchableOpacity style={styles.rowModalDropdown}
+                          onPress={() => this._onCoinPickerSelect(index)}>
+          {iconCoin}
+          <Text style={styles.nameCoinInModal}>{text}</Text>
+        </TouchableOpacity>
+        <View style={styles.lineInModal}></View>
+      </View>
+
+    )
+  }
+
+  _generateOptionList() {
+    return map(this.listCoin, (e, index) => {
+      let iconCoin = '';
+      switch (e) {
+        case 'BTC':
+          iconCoin = <Image style={styles.iconCoin} source={require('../../../assets/coinIcon/btc/bit.png')}/>;
+          return this._renderRowInModal(index, 'Bitcoin - BTC', iconCoin);
+          break;
+        case 'ETH':
+          iconCoin = <Image style={styles.iconCoin} source={require('../../../assets/coinIcon/eth/eth.png')}/>;
+          return this._renderRowInModal(index, 'Ethereum - ETH', iconCoin);
+          break;
+        case 'ABC':
+          iconCoin = <Image style={styles.iconCoin} source={require('../../../assets/coinIcon/abc/abc.png')}/>;
+          return this._renderRowInModal(index, 'Abc coin - ABC', iconCoin);
+          break;
+        default:
+          return null
+      }
+    })
   }
 
   render() {
@@ -288,8 +350,21 @@ export default class OtpScreen extends PureComponent {
 
         </View>
 
-        <TouchableOpacity style={styles.buttonSelectCoin}>
-          <Text style={styles.coinName}>BTC</Text>
+        <TouchableOpacity style={styles.buttonSelectCoin}
+                          onPress={() => this.setState({ showListCoin: true })}>
+          <Text style={styles.coinName}>{this.state.selectedCoinType}</Text>
+          {/*<ModalDropdown*/}
+          {/*ref={ref => this._coinDropDown = ref}*/}
+          {/*style={{ flex: 1, alignItems: 'center', height: scale(30) }}*/}
+          {/*defaultValue='BTC'*/}
+          {/*dropdownStyle={[styles.modalDropdown, {*/}
+          {/*height: this._calculateModalHeight()*/}
+          {/*}]}*/}
+          {/*textStyle={styles.coinName}*/}
+          {/*dropdownTextStyle={{}}*/}
+          {/*// renderSeparator={() => <View style={{ height: scale(1) }}/>}*/}
+          {/*options={this._generateOptionList()}*/}
+          {/*onSelect={this._onCoinPickerSelect.bind(this)}/>*/}
           <Image style={styles.arrowInButton}
                  source={require('../../../assets/arrow/arrowDown/white.png')}
           />
@@ -299,6 +374,7 @@ export default class OtpScreen extends PureComponent {
             {this._renderSenCoin()}
             {this._renderMain2()}
             {this._renderAddNewWallet()}
+            {this._renderListCoin()}
           </View>
         </ScrollView>
       </View>
@@ -364,7 +440,9 @@ const styles = ScaledSheet.create({
     textAlign: 'center',
     fontFamily: 'Futura Book font',
     fontSize: '13@s',
-    color: '#ffffff'
+    color: '#ffffff',
+    // paddingTop: '7@s',
+    // width: '315@s'
   },
   arrowInButton: {
     position: 'absolute',
@@ -442,7 +520,7 @@ const styles = ScaledSheet.create({
     width: 21,
     height: 20
   },
-  sliderContainer:{
+  sliderContainer: {
     flexDirection: 'column',
     height: '25@s',
     alignItems: 'center',
@@ -529,5 +607,35 @@ const styles = ScaledSheet.create({
   qrCode: {
     width: '155@s',
     height: '155@s'
+  },
+  modalDropdown: {
+    justifyContent: 'flex-start',
+    paddingTop: '30@s'
+  },
+  iconCoin: {
+    width: '20@s',
+    height: '20@s'
+  },
+  rowModalDropdown: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: '44@s',
+    paddingLeft: '16@s',
+    paddingRight: '16@s',
+  },
+  cardListCoin: {
+    padding: 0,
+  },
+  lineInModal: {
+    marginLeft: '16@s',
+    marginRight: '16@s',
+    height: '1@s',
+    backgroundColor: '#E0E0E0',
+  },
+  nameCoinInModal: {
+    marginLeft: '10@s',
+    color: '#576574',
+    fontFamily: 'Futura Book font',
+    fontSize: '14@s',
   }
 });
