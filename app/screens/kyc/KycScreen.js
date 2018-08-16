@@ -1,23 +1,20 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import {
   View,
   Text,
   Image,
   TextInput,
-  ScrollView,
   Dimensions,
   TouchableOpacity,
   TouchableWithoutFeedback,
 } from 'react-native';
 import ScaledSheet from "../../libs/reactSizeMatter/ScaledSheet";
-import { Navigation } from 'react-native-navigation';
 import DeviceInfo from 'react-native-device-info';
 import CountryPicker, { getAllCountries } from 'react-native-country-picker-modal';
 import ListCountry from '../../utils/cca2';
 import Carousel from 'react-native-snap-carousel';
 import { goQrCode } from "../navigation";
 import ImagePicker from 'react-native-image-crop-picker';
-import Buffer from 'buffer';
 import { scale } from "../../libs/reactSizeMatter/scalingUtils";
 
 const { width } = Dimensions.get('window');
@@ -356,7 +353,7 @@ const styles = ScaledSheet.create({
     justifyContent: 'center',
     marginTop: '23@s',
   },
-  viewSlide: { 
+  viewSlide: {
     flexDirection: 'row',
     justifyContent: 'center'
   },

@@ -78,7 +78,7 @@ export const goQrCode = () => Navigation.showOverlay({
     name: 'QrCode',
     options: {
       overlay: {
-        interceptTouchOutside: false
+        interceptTouchOutside: true
       }
     }
   }
