@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { View, Text, Image, TextInput, TouchableWithoutFeedback, ToastAndroid } from 'react-native';
 import ScaledSheet from '../../libs/reactSizeMatter/ScaledSheet';
 import { Navigation } from 'react-native-navigation';
-import {goMain} from '../navigation';
+import { goMain } from '../navigation';
 
 class LoginScreen extends PureComponent {
   state = {
@@ -66,8 +66,11 @@ class LoginScreen extends PureComponent {
     }
   }
 
-  _loginFacebook() {
+  _loginApp() {
     goMain();
+  }
+
+  _loginFacebook() {
   }
 
   render() {
@@ -99,10 +102,14 @@ class LoginScreen extends PureComponent {
                      value={password}
                      secureTextEntry={true}
                      onChangeText={(p) => this._changePassword(p)}/>
-          <TouchableWithoutFeedback onPress={() => this._checkEmail()}>
-            <Image source={require('../../../assets/enter/enter.png')}
-                   style={styles.imgEnter}/>
-          </TouchableWithoutFeedback>
+
+          {password ? <TouchableWithoutFeedback onPress={() => this._loginApp()}>
+            <View>
+              <Image source={require('../../../assets/enter/enter.png')}
+                     style={styles.imgEnter}/>
+            </View>
+          </TouchableWithoutFeedback> : null}
+
         </View> : null}
 
 
@@ -117,7 +124,7 @@ class LoginScreen extends PureComponent {
           </View>
         </View>
 
-        <TouchableWithoutFeedback  onPress={() => this._loginFacebook()}>
+        <TouchableWithoutFeedback onPress={() => this._loginFacebook()}>
           <View style={styles.facebookContainer}>
             <Image source={require('../../../assets/facebook/facebook.png')} style={styles.imgFacebook}/>
             <Text style={styles.textFacebook}>Facebook</Text>
@@ -132,8 +139,8 @@ class LoginScreen extends PureComponent {
 
         <View style={styles.termContainer}>
           <Text style={styles.textTerm}>Terms & Conditions <Text style={styles.dividerTerm}> | </Text> Policy
-            <Text style={styles.dividerTerm}>  | </Text> White Paper
-            <Text style={styles.dividerTerm}>  | </Text> Token Sale Agreements</Text>
+            <Text style={styles.dividerTerm}> | </Text> White Paper
+            <Text style={styles.dividerTerm}> | </Text> Token Sale Agreements</Text>
         </View>
       </View>
     )

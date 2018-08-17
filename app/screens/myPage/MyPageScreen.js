@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { View, Text, Image, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import ScaledSheet from '../../libs/reactSizeMatter/ScaledSheet';
 import { scale } from "../../libs/reactSizeMatter/scalingUtils";
-
+import { goKyc } from '../navigation';
 
 export default class MyPageScreen extends PureComponent {
   static get options() {
@@ -345,7 +345,7 @@ export default class MyPageScreen extends PureComponent {
                 </View>
               )
               : (
-                <TouchableOpacity style={styles.notVerified}>
+                <TouchableOpacity style={styles.notVerified} onPress={() => goKyc()}>
                   <Text style={[styles.verifyStatus, { color: '#D0021B', flex: 1 }]}>Not verified</Text>
                   <View style={{ marginLeft: scale(28) }}>
                     <Image style={styles.arrowRight}

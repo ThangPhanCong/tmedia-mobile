@@ -13,7 +13,7 @@ import DeviceInfo from 'react-native-device-info';
 import CountryPicker, { getAllCountries } from 'react-native-country-picker-modal';
 import ListCountry from '../../utils/cca2';
 import Carousel from 'react-native-snap-carousel';
-import { goQrCode } from "../navigation";
+import { goQrCode, goBackMyPage } from "../navigation";
 import ImagePicker from 'react-native-image-crop-picker';
 import { scale } from "../../libs/reactSizeMatter/scalingUtils";
 
@@ -233,8 +233,13 @@ class KycScreen extends React.Component {
   render() {
     return (
       <View style={styles.screen}>
-        <Image source={require('../../../assets/backBlack/back.png')}
-               style={styles.imgBack}/>
+        <TouchableWithoutFeedback onPress={() => goBackMyPage()}>
+          <View>
+            <Image source={require('../../../assets/backBlack/back.png')}
+                   style={styles.imgBack}/>
+          </View>
+        </TouchableWithoutFeedback>
+
 
         {this._renderAvatarUser()}
         {this._renderFormSubmit()}
