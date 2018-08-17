@@ -84,3 +84,26 @@ export const goQrCode = () => Navigation.showOverlay({
   }
 });
 
+export const goKyc = () => Navigation.showModal({
+  stack: {
+    children: [{
+      component: {
+        id: 'kycScreen',
+        name: 'Kyc',
+        passProps: {
+          text: 'stack with one child'
+        },
+        options: {
+          topBar: {
+            title: {
+              text: 'Modal'
+            }
+          }
+        }
+      }
+    }]
+  }
+});
+
+
+export const goBackMyPage = () => Navigation.dismissModal('kycScreen');
