@@ -101,7 +101,7 @@ android {
         applicationId "com.tmediamobile"
         minSdkVersion 19
         targetSdkVersion 25
-        missingDimensionStrategy "RNN.reactNativeVersion", "reactNative55"
+        missingDimensionStrategy "RNN.reactNativeVersion", "reactNative56"
         versionCode 1
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true
