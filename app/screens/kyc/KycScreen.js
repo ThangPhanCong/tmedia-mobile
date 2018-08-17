@@ -16,6 +16,7 @@ import Carousel from 'react-native-snap-carousel';
 import { goQrCode, goBackMyPage } from "../navigation";
 import ImagePicker from 'react-native-image-crop-picker';
 import { scale } from "../../libs/reactSizeMatter/scalingUtils";
+import { Navigation } from 'react-native-navigation';
 
 const { width } = Dimensions.get('window');
 
@@ -67,7 +68,8 @@ class KycScreen extends React.Component {
           name: require('../../../assets/idCard/id-card.png'),
           type: KycScreen.TYPE_IMAGE.DEFAULT
         }
-      ]
+      ],
+      payloadKyc: {}
     }
   }
 
@@ -81,6 +83,15 @@ class KycScreen extends React.Component {
 
     };
   }
+
+
+  static PAYLOAD_TYPE = {
+    NAME: 'name',
+    CITY: 'city',
+    PASSPORT: 'passport',
+    POSTAL: 'postal',
+    ETH_ADDRESS: 'ethAddress'
+  };
 
   async _pickImageCamera(index) {
     try {
@@ -119,6 +130,18 @@ class KycScreen extends React.Component {
 
   }
 
+  _onChaneParamsKyc(value, title) {
+    const { payloadKyc } = this.state;
+
+    payloadKyc[`${title}`] = value;
+    this.setState({ payloadKyc });
+  }
+
+  _submitFormKyc() {
+    this.props.onPassProp(true);
+    goBackMyPage();
+  }
+
   _renderItemAvatarUser({ item, index }) {
     return (
       <View style={styles.slide}>
@@ -129,7 +152,8 @@ class KycScreen extends React.Component {
           <Text style={styles.titleSlide}>{item.title}</Text>
           {
             item.type !== KycScreen.TYPE_IMAGE.DEFAULT ?
-              <Image source={require('../../../assets/selectedAvatar/finish.png')} style={styles.imgSelectedAvatar}/> : null
+              <Image source={require('../../../assets/selectedAvatar/finish.png')}
+                     style={styles.imgSelectedAvatar}/> : null
           }
         </View>
 
@@ -168,12 +192,24 @@ class KycScreen extends React.Component {
     )
   }
 
+  _renderTextInputKyc(title) {
+    const { payloadKyc } = this.state;
+    const valueInput = payloadKyc[`${title}`];
+
+    return (
+      <TextInput style={styles.inputKyc} value={valueInput} onChangeText={value => this._onChaneParamsKyc(value, title)}/>
+    )
+  }
+
   _renderFormSubmit() {
+    const { payloadKyc, cca2 } = this.state;
+    const isDisableSubmit = !payloadKyc.name || !payloadKyc.city || !payloadKyc.postal || !payloadKyc.passport || !payloadKyc.ethAddress || !cca2;
+
     return (
       <View style={styles.userInformation}>
         <View style={styles.formName}>
           <Text style={styles.fullName}>Full name</Text>
-          <TextInput style={styles.inputKyc}/>
+          {this._renderTextInputKyc(KycScreen.PAYLOAD_TYPE.NAME)}
         </View>
 
         <View style={styles.formCountry}>
@@ -192,23 +228,23 @@ class KycScreen extends React.Component {
         <View style={{ flexDirection: 'row' }}>
           <View style={styles.formCity}>
             <Text style={styles.titleKyc}>City</Text>
-            <TextInput style={styles.inputKyc}/>
+            {this._renderTextInputKyc(KycScreen.PAYLOAD_TYPE.CITY)}
           </View>
           <View style={styles.formPostal}>
             <Text style={styles.titleKyc}>Postal code</Text>
-            <TextInput style={styles.inputKyc}/>
+            {this._renderTextInputKyc(KycScreen.PAYLOAD_TYPE.POSTAL)}
           </View>
         </View>
 
         <View style={styles.passportId}>
           <Text style={styles.titleKyc}>Passport / ID</Text>
-          <TextInput style={styles.inputKyc}/>
+          {this._renderTextInputKyc(KycScreen.PAYLOAD_TYPE.PASSPORT)}
         </View>
 
         <View style={styles.ethAddress}>
           <View style={styles.inputAddress}>
             <Text style={[styles.titleKyc, { flex: 1 }]}>Ethereum Address</Text>
-            <TextInput style={styles.inputKyc}/>
+            {this._renderTextInputKyc(KycScreen.PAYLOAD_TYPE.ETH_ADDRESS)}
             <TouchableWithoutFeedback onPress={() => goQrCode()}>
               <View>
                 <Image source={require('../../../assets/qrCode/qr-code.png')} style={styles.imgQrcode}/>
@@ -220,9 +256,10 @@ class KycScreen extends React.Component {
         </View>
 
         <View>
-          <TouchableOpacity style={styles.viewSubmit}>
+          <TouchableOpacity style={styles.viewSubmit} onPress={!isDisableSubmit ? () => this._submitFormKyc() : () => {
+          }}>
             <View>
-              <Text style={styles.textSubmit}>SUBMIT</Text>
+              <Text style={!isDisableSubmit ? styles.textSubmit : styles.textUnSubmit}>SUBMIT</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -321,6 +358,11 @@ const styles = ScaledSheet.create({
   textSubmit: {
     textAlign: 'center',
     color: '#10AC84',
+    fontSize: '16@s'
+  },
+  textUnSubmit: {
+    textAlign: 'center',
+    color: '#576574',
     fontSize: '16@s'
   },
   formCountry: {
