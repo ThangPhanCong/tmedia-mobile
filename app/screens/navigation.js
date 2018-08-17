@@ -78,9 +78,10 @@ export const goQrCode = () => Navigation.showOverlay({
     name: 'QrCode',
     options: {
       overlay: {
-        interceptTouchOutside: false
+        interceptTouchOutside: true
       }
     }
   }
 });
 
+export const goBackMyPage = () => Navigation.dismissModal('kycScreen');

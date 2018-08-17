@@ -1,10 +1,11 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { View, Text, Image, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import ScaledSheet from '../../libs/reactSizeMatter/ScaledSheet';
 import { scale } from "../../libs/reactSizeMatter/scalingUtils";
+import { goKyc } from '../navigation';
+import { Navigation } from "react-native-navigation";
 
-
-export default class MyPageScreen extends PureComponent {
+export default class MyPageScreen extends Component {
   static get options() {
     return {
       topBar: {
@@ -14,6 +15,12 @@ export default class MyPageScreen extends PureComponent {
       }
     };
   }
+
+  static PAYLOAD_TYPE = {
+    PHONE: 'phone',
+    SMS_CODE: 'smsCode',
+    AUTHENTICATION: 'authenticationCode'
+  };
 
   constructor(props) {
     super(props);
@@ -30,11 +37,74 @@ export default class MyPageScreen extends PureComponent {
       showNewPassword: false,
       showRepeatPassWord: false,
 
-      KYCVerified: false
+      KYCVerified: false,
+      payloadAccount: {}
     }
   }
 
+  _goKyc() {
+    Navigation.showModal({
+      stack: {
+        children: [{
+          component: {
+            id: 'kycScreen',
+            name: 'Kyc',
+            passProps: {
+              onPassProp: (data) => this.setState({
+                KYCVerified: data
+              })
+            },
+            options: {
+              topBar: {
+                title: {
+                  text: 'Modal'
+                }
+              }
+            }
+          }
+        }]
+      }
+    });
+  }
+
+  _changePayloadAccount(value, title) {
+    const { payloadAccount } = this.state;
+
+    payloadAccount[`${title}`] = value;
+    this.setState({ payloadAccount });
+  }
+
+  _submitPhone() {
+    this.setState({ phoneVerified: true, showVerifyPhone: false })
+  }
+
+  _submitAuthentication() {
+    this.setState({ googleVerified: true })
+  }
+
+  _renderInputAccount(title) {
+    const { payloadAccount } = this.state;
+    const valueInput = payloadAccount[`${title}`];
+    const styleInput = title === MyPageScreen.PAYLOAD_TYPE.PHONE ? [styles.phoneInput, { paddingBottom: 0 }] : [styles.phoneInput, {
+      textAlign: 'center',
+      height: scale(40)
+    }];
+
+    return (
+      <TextInput style={styleInput}
+                 keyboardType='numeric'
+                 underlineColorAndroid='transparent'
+                 value={valueInput}
+                 onChangeText={value => this._changePayloadAccount(value, title)}
+      />
+    )
+  }
+
   _renderShowVerifyPhone() {
+    const { payloadAccount } = this.state;
+    const isSubmitPhone = !payloadAccount.phone || !payloadAccount.smsCode;
+
+    console.log("isSubmitPhone:", isSubmitPhone)
     return (
       <View>
         {
@@ -59,24 +129,14 @@ export default class MyPageScreen extends PureComponent {
                          source={require('../../../assets/flagVietnamese/VN.png')}/>
                   <Text style={styles.codeVN}>+84</Text>
                   <View style={{ flex: 1, borderBottomColor: '#E0E0E0', borderBottomWidth: scale(1) }}>
-                    <TextInput style={[styles.phoneInput, { paddingBottom: 0 }]}
-                               keyboardType='numeric'
-                               underlineColorAndroid='transparent'
-                      // value={password}
-                      // onChangeText={(p) => this._changePassword(p)}
-                    />
+                    {this._renderInputAccount(MyPageScreen.PAYLOAD_TYPE.PHONE)}
                   </View>
                 </View>
 
                 <View style={[styles.phoneInputContainer, styles.smsInputContainer]}>
                   <Text style={styles.smsCode}>SMS Code</Text>
                   <View style={{ flex: 1 }}>
-                    <TextInput style={[styles.phoneInput, { textAlign: 'center', height: scale(40) }]}
-                               keyboardType='numeric'
-                               underlineColorAndroid='transparent'
-                      // value={password}
-                      // onChangeText={(p) => this._changePassword(p)}
-                    />
+                    {this._renderInputAccount(MyPageScreen.PAYLOAD_TYPE.SMS_CODE)}
                   </View>
                 </View>
 
@@ -87,7 +147,10 @@ export default class MyPageScreen extends PureComponent {
                   <TouchableOpacity onPress={() => this.setState({ showVerifyPhone: false })}>
                     <Text style={styles.buttonCancel}>Cancel</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity><Text style={[styles.buttonSms, { color: '#10AC84' }]}>OK</Text></TouchableOpacity>
+
+                  <TouchableOpacity onPress={!isSubmitPhone ? () => this._submitPhone() : null}>
+                    <Text style={[styles.buttonSms, { color: '#10AC84' }]}>OK</Text>
+                  </TouchableOpacity>
 
                 </View>
               </View>
@@ -123,17 +186,20 @@ export default class MyPageScreen extends PureComponent {
   }
 
   __renderShowVerifyGoogleAuth() {
+    const { payloadAccount, googleVerified } = this.state;
+    const isSubmitAuthentication = !payloadAccount.authenticationCode;
+
     return (
       <View>
         {
           this.state.showVerifyGoogleAuth
             ? (
               <View style={styles.bigRow}>
-                <View style={styles.titleRow}>
+                <View style={!googleVerified ? styles.titleRow : styles.titleRowVerified}>
                   <Text style={styles.nameType}>Google Authenicator</Text>
 
                   {
-                    this.state.googleVerified
+                    googleVerified
                       ? (
                         <View style={styles.notVerified}>
                           <Text style={[styles.verifyStatus, { color: '#576574', flex: 1 }]}/>
@@ -155,7 +221,7 @@ export default class MyPageScreen extends PureComponent {
                 </View>
 
                 {
-                  this.state.googleVerified
+                  googleVerified
                     ? (
                       <View/>
                     )
@@ -167,27 +233,28 @@ export default class MyPageScreen extends PureComponent {
                     )
                 }
 
-                <View style={[styles.phoneInputContainer, styles.smsInputContainer]}>
-                  <Text style={styles.smsCode}>Authenication code</Text>
-                  <View style={{ flex: 1 }}>
-                    <TextInput style={[styles.phoneInput, { textAlign: 'center', height: scale(40) }]}
-                               keyboardType='numeric'
-                               underlineColorAndroid='transparent'
-                      // value={password}
-                      // onChangeText={(p) => this._changePassword(p)}
-                    />
-                  </View>
-                </View>
+                {!googleVerified ? <View>
+                    <View style={[styles.phoneInputContainer, styles.smsInputContainer]}>
+                      <Text style={styles.smsCode}>Authenication code</Text>
+                      <View style={{ flex: 1 }}>
+                        {this._renderInputAccount(MyPageScreen.PAYLOAD_TYPE.AUTHENTICATION)}
+                      </View>
+                    </View>
 
-                <View style={[styles.groupMpdalPhoneText, { justifyContent: 'center' }]}>
-                  <TouchableOpacity style={{ marginRight: scale(15) }}
-                                    onPress={() => this.setState({ showVerifyGoogleAuth: false })}>
-                    <Text style={styles.buttonCancel}>Cancel</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={{ marginLeft: scale(15) }}>
-                    <Text style={[styles.buttonSms, { color: '#10AC84' }]}>OK</Text>
-                  </TouchableOpacity>
-                </View>
+                    <View style={[styles.groupMpdalPhoneText, { justifyContent: 'center' }]}>
+                      <TouchableOpacity style={{ marginRight: scale(15) }}
+                                        onPress={() => this.setState({ showVerifyGoogleAuth: false })}>
+                        <Text style={styles.buttonCancel}>Cancel</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity style={{ marginLeft: scale(15) }}
+                                        onPress={!isSubmitAuthentication ? () => this._submitAuthentication() : () => {
+                                        }}>
+                        <Text style={[styles.buttonSms, { color: '#10AC84' }]}>OK</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                  : null
+                }
               </View>
             )
             : (
@@ -217,7 +284,6 @@ export default class MyPageScreen extends PureComponent {
                       </TouchableOpacity>
                     )
                 }
-
               </View>
             )
         }
@@ -345,7 +411,7 @@ export default class MyPageScreen extends PureComponent {
                 </View>
               )
               : (
-                <TouchableOpacity style={styles.notVerified}>
+                <TouchableOpacity style={styles.notVerified} onPress={() => this._goKyc()}>
                   <Text style={[styles.verifyStatus, { color: '#D0021B', flex: 1 }]}>Not verified</Text>
                   <View style={{ marginLeft: scale(28) }}>
                     <Image style={styles.arrowRight}
@@ -437,6 +503,15 @@ const styles = ScaledSheet.create({
     paddingRight: '28@s',
     borderBottomColor: '#E0E0E0',
     borderBottomWidth: '1@s'
+  },
+  titleRowVerified: {
+    flexDirection: 'row',
+    // borderBottomWidth: '1@s',
+    // borderBottomColor: '#E0E0E0',
+    height: '36.5@s',
+    alignItems: 'center',
+    paddingLeft: '20@s',
+    paddingRight: '28@s',
   },
   phoneInputContainer: {
     flexDirection: 'row',
