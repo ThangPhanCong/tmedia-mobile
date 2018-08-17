@@ -110,7 +110,7 @@ export default class MyPageScreen extends Component {
         {
           this.state.showVerifyPhone
             ? (
-              <View style={styles.bigrow}>
+              <View style={styles.bigRow}>
                 <View style={styles.titleRow}>
                   <Text style={styles.nameType}>Phone</Text>
                   <TouchableOpacity style={styles.notVerified}
@@ -194,7 +194,7 @@ export default class MyPageScreen extends Component {
         {
           this.state.showVerifyGoogleAuth
             ? (
-              <View style={styles.bigrow}>
+              <View style={styles.bigRow}>
                 <View style={!googleVerified ? styles.titleRow : styles.titleRowVerified}>
                   <Text style={styles.nameType}>Google Authenicator</Text>
 
@@ -297,7 +297,7 @@ export default class MyPageScreen extends Component {
         {
           this.state.showChangePassWord
             ? (
-              <View style={styles.bigrow}>
+              <View style={styles.bigRow}>
                 <View style={styles.titleRow}>
                   <Text style={styles.nameType}>Change password</Text>
                   <TouchableOpacity style={styles.notVerified}
@@ -487,7 +487,7 @@ const styles = ScaledSheet.create({
     width: '6@s',
     height: '10@s'
   },
-  bigrow: {
+  bigRow: {
     marginBottom: '20@s',
     backgroundColor: '#ffffff',
     borderRadius: '28@s',
