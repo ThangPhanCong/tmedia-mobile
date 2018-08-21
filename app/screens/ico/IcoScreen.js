@@ -5,6 +5,7 @@ import { scale } from '../../libs/reactSizeMatter/scalingUtils';
 import SwitchSelector from 'react-native-switch-selector';
 import * as Progress from 'react-native-progress';
 import { goQrCode } from "../navigation";
+import Timeline from 'react-native-timeline-listview'
 
 const { height } = Dimensions.get('window');
 
@@ -14,7 +15,29 @@ class IcoScreen extends PureComponent {
     ethAddress: null,
     isShowEthAddress: false,
     isShowInputEthAddress: false,
-    typeSale: IcoScreen.TYPE_SALE.PRE
+    typeSale: IcoScreen.TYPE_SALE.PRE,
+    timeline: [
+      {
+        time: 'May\n' +
+          '2018', title: 'Ideation, research, initial concepts'
+      },
+      {
+        time: 'Jun\n' +
+          '2018', title: 'Working docs & preliminary specs'
+      },
+      {
+        time: 'Jul\n' +
+          '2018', title: 'Simple Token project scope'
+      },
+      {
+        time: 'Aug\n' +
+          '2018', title: 'Design prototypes & early white papers'
+      },
+      {
+        time: 'Sep\n' +
+          '2018', title: 'Token design model'
+      }
+    ]
   };
 
   static TYPE_SALE = {
@@ -190,10 +213,29 @@ class IcoScreen extends PureComponent {
   }
 
   _renderPreSale() {
+    const { timeline } = this.state;
     return (
       <View>
-        <Text>adu</Text>
+        <View style={styles.viewRoadmap}>
+          <Text style={styles.textRoadmap}>Roadmap</Text>
+        </View>
+        <View style={styles.timelineContainer}>
+          <Timeline
+            circleSize={20}
+            data={timeline}
+            circleColor='#9B9B9B'
+            lineColor='#9B9B9B'
+            timeContainerStyle={{ minWidth: 52, marginTop: 2 }}
+            timeStyle={{ textAlign: 'center', color: '#9B9B9B', paddingBottom: 15 }}
+            descriptionStyle={{ color: 'gray' }}
+            titleStyle={{ fontWeight: 'none', fontSize: 12, color: '#9B9B9B' }}
+            options={{
+              style: { marginTop: 15, paddingLeft: 10}
+            }}
+          />
+        </View>
       </View>
+
     )
   }
 
@@ -253,7 +295,7 @@ class IcoScreen extends PureComponent {
                           buttonColor={'#576574'}
                           height={scale(40)}
                           fontSize={scale(12)}
-                          onPress={typeSale => this.setState({typeSale})}/>
+                          onPress={typeSale => this.setState({ typeSale })}/>
         </View>
 
         <View>
@@ -500,5 +542,27 @@ const styles = ScaledSheet.create({
     textAlign: 'center',
     marginTop: '12@s',
     marginBottom: '14@s',
+  },
+  timelineContainer: {
+    marginTop: '120@s',
+    marginLeft: '29@s',
+    marginRight: '29@s',
+    marginBottom: '29@s',
+    borderWidth: '1@s',
+    borderColor: '#E0E0E0',
+    borderRadius: '5@s',
+    justifyContent: 'center',
+  },
+  viewRoadmap: {
+    position: 'absolute',
+    top: '110@s',
+    width: '100@s',
+    alignSelf: 'center',
+    height: '20@s',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: '10@s',
+    borderWidth: '1@s',
+    borderColor: '#E0E0E0',
   }
 });
