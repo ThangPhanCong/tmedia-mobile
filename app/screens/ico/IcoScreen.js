@@ -14,6 +14,12 @@ class IcoScreen extends PureComponent {
     ethAddress: null,
     isShowEthAddress: false,
     isShowInputEthAddress: false,
+    typeSale: IcoScreen.TYPE_SALE.PRE
+  };
+
+  static TYPE_SALE = {
+    PRE: 'Pre sale',
+    PUBLIC: 'Public sale',
   };
 
   static get options() {
@@ -158,16 +164,55 @@ class IcoScreen extends PureComponent {
     )
   }
 
-  render() {
-    const optionSale = [
-      { label: 'Private sale', value: '1' },
-      { label: 'Public sale', value: '1.5' },
-    ];
-
+  _renderPublicSale() {
     const optionCoin = [
       { label: 'BTC', value: '1' },
       { label: 'ETH', value: '1.5' },
     ];
+
+    return (
+      <View>
+        {this._renderDepositAddress()}
+
+        <View style={styles.switchCoin}>
+          <SwitchSelector options={optionCoin} initial={0}
+                          selectedColor={'#FFF'}
+                          buttonColor={'#576574'}
+                          height={scale(20)}
+                          fontSize={scale(12)}
+                          onPress={value => console.log(`Call onPress with value: ${value}`)}/>
+        </View>
+
+        {this._renderEthAddress()}
+        {this._renderHistoryActivities()}
+      </View>
+    )
+  }
+
+  _renderPreSale() {
+    return (
+      <View>
+        <Text>adu</Text>
+      </View>
+    )
+  }
+
+  _renderContentIco(type) {
+    return (
+      <View>
+        {type === IcoScreen.TYPE_SALE.PRE ? this._renderPreSale()
+          : this._renderPublicSale()
+        }
+      </View>
+    )
+  }
+
+  render() {
+    const optionSale = [
+      { label: IcoScreen.TYPE_SALE.PRE, value: IcoScreen.TYPE_SALE.PRE },
+      { label: IcoScreen.TYPE_SALE.PUBLIC, value: IcoScreen.TYPE_SALE.PUBLIC },
+    ];
+    const { typeSale } = this.state;
 
     return (
       <ScrollView contentContainerStyle={styles.screen}>
@@ -208,7 +253,7 @@ class IcoScreen extends PureComponent {
                           buttonColor={'#576574'}
                           height={scale(40)}
                           fontSize={scale(12)}
-                          onPress={value => console.log(`Call onPress with value: ${value}`)}/>
+                          onPress={typeSale => this.setState({typeSale})}/>
         </View>
 
         <View>
@@ -227,20 +272,8 @@ class IcoScreen extends PureComponent {
             <Text style={styles.textRatio}>8,000,000 / 10,000,000</Text>
           </View>
         </View>
+        {this._renderContentIco(typeSale)}
 
-        {this._renderDepositAddress()}
-
-        <View style={styles.switchCoin}>
-          <SwitchSelector options={optionCoin} initial={0}
-                          selectedColor={'#FFF'}
-                          buttonColor={'#576574'}
-                          height={scale(20)}
-                          fontSize={scale(12)}
-                          onPress={value => console.log(`Call onPress with value: ${value}`)}/>
-        </View>
-
-        {this._renderEthAddress()}
-        {this._renderHistoryActivities()}
       </ScrollView>
     )
   }
