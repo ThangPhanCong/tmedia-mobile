@@ -41,6 +41,8 @@ class ExChange extends Component {
         code: 'Main - 3B1tAaz5x1HUXrCNLbtMDqcw6o5GN...'
       },
     ],
+    secretCode: '',
+    selectedWallet: '',
     isShowListCoin: false,
     isShowSecretCode: true,
   };
@@ -113,7 +115,6 @@ class ExChange extends Component {
     )
   }
 
-
   _renderAddress() {
     return (
       <View style={styles.addressContainer}>
@@ -140,20 +141,24 @@ class ExChange extends Component {
         dropdownStyle={styles.viewDropDown}
         dropdownTextStyle={styles.dropDownTextStyle}
         showsVerticalScrollIndicator={false}
-        dropdownTextHighlightStyle={styles.dropDownTextHighlightStyle}
+        // dropdownTextHighlightStyle={styles.dropDownTextHighlightStyle}
         onSelect={(rowID) => {
+          this.setState({selectedWallet: addressWallet[rowID].code});
         }}
       />
     )
   }
 
   _renderSecretCode() {
-    const { isShowSecretCode } = this.state;
+    const { isShowSecretCode, secretCode } = this.state;
 
     return (
       <View style={styles.secretCodeContainer}>
         <Text style={styles.titleSecretCode}>Secret code</Text>
-        <TextInput style={styles.inputSecretCode} secureTextEntry={isShowSecretCode}/>
+        <TextInput style={styles.inputSecretCode}
+                   onChangeText={value => this.setState({secretCode: value})}
+                   secureTextEntry={isShowSecretCode}
+                   value={secretCode}/>
         <TouchableWithoutFeedback onPress={() => this._toggleSecretCode()}>
           <View>
             {
@@ -192,10 +197,13 @@ class ExChange extends Component {
   }
 
   _renderSubmit() {
+    const { secretCode, selectedWallet } = this.state;
+    const isDisabled = !secretCode || !selectedWallet;
+
     return(
       <TouchableOpacity style={styles.submitContainer}>
         <View>
-          <Text style={styles.textSubmit}>SUBMIT</Text>
+          <Text style={isDisabled ? styles.textUnSubmit : styles.textSubmit}>SUBMIT</Text>
         </View>
       </TouchableOpacity>
     )
@@ -352,14 +360,15 @@ const styles = ScaledSheet.create({
   },
   buttonSelectDropdown: {
     flexDirection: 'row',
-    paddingBottom: '13.5@s',
-    width: '275@s',
     justifyContent: 'space-between',
+    width: '287@s',
+    paddingBottom: '13.5@s',
     borderBottomColor: '#E0E0E0',
     borderBottomWidth: '1@s'
   },
   viewDropDown: {
-    width: '275@s',
+    width: '287@s',
+    height: '70@s',
   },
   valueDropdown: {
     fontSize: '12@s',
@@ -370,9 +379,11 @@ const styles = ScaledSheet.create({
   secretCodeContainer: {
     flexDirection: 'row',
     marginLeft: '48@s',
-    width: '275@s',
+    marginRight: '40@s',
     alignItems: 'center',
     justifyContent: 'space-between',
+    borderBottomColor: '#E0E0E0',
+    borderBottomWidth: '1@s'
   },
   titleSecretCode: {
     fontSize: '12@s',
@@ -381,7 +392,7 @@ const styles = ScaledSheet.create({
   },
   inputSecretCode: {
     textAlign: 'left',
-    width: '200@s'
+    width: '180@s'
   },
   imgEye: {
     width: '18@s',
@@ -404,7 +415,7 @@ const styles = ScaledSheet.create({
     borderBottomWidth: '1@s',
     borderBottomColor: '#E0E0E0',
     paddingBottom: '11@s',
-    marginRight: '52@s'
+    marginRight: '40@s'
   },
   valueCoinReceive: {
     color: '#B8BEC6',
@@ -450,9 +461,14 @@ const styles = ScaledSheet.create({
     justifyContent: 'center',
     marginTop: '50@s'
   },
-  textSubmit: {
+  textUnSubmit: {
     fontSize: '16@s',
     color: '#B8BEC6',
+    fontFamily: 'Futura Light Regular',
+  },
+  textSubmit: {
+    fontSize: '16@s',
+    color: '#10AC84',
     fontFamily: 'Futura Light Regular',
   }
 });
