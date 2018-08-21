@@ -183,9 +183,21 @@ class ExChange extends Component {
 
   _renderYourAddress() {
     return(
-      <View>
-
+      <View style={styles.yourAddressContainer}>
+        <Text style={styles.titleYourAddress}>In your ETH Address</Text>
+        <Text style={styles.contentYourAddress}>0x278EDfD9bF4c3cab1Ac4951B0094F82424771
+          B6E</Text>
       </View>
+    )
+  }
+
+  _renderSubmit() {
+    return(
+      <TouchableOpacity style={styles.submitContainer}>
+        <View>
+          <Text style={styles.textSubmit}>SUBMIT</Text>
+        </View>
+      </TouchableOpacity>
     )
   }
 
@@ -215,6 +227,7 @@ class ExChange extends Component {
         {this._renderSecretCode()}
         {this._renderYourCoinReceive()}
         {this._renderYourAddress()}
+        {this._renderSubmit()}
       </View>
     )
   }
@@ -411,5 +424,35 @@ const styles = ScaledSheet.create({
     fontSize: '14@s',
     fontFamily: 'Futura Light Regular',
     marginLeft: '12@s'
+  },
+  yourAddressContainer: {
+    flexDirection: 'column',
+    marginTop: '10@s',
+    marginLeft: '48@s',
+    marginRight: '38@s',
+  },
+  titleYourAddress: {
+    color: '#576574',
+    fontSize: '13@s',
+    fontFamily: 'Futura',
+    textAlign: 'left',
+    marginBottom: '4@s'
+  },
+  contentYourAddress: {
+    textAlign: 'center',
+    lineHeight: '15@s',
+    fontSize: '13@s',
+    color: '#576574',
+    fontFamily: 'Futura Light Regular',
+  },
+  submitContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: '50@s'
+  },
+  textSubmit: {
+    fontSize: '16@s',
+    color: '#B8BEC6',
+    fontFamily: 'Futura Light Regular',
   }
 });
