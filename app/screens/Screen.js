@@ -11,4 +11,5 @@ export function registerScreens() {
   Navigation.registerComponent('WalletInfor', () => require('./wallet/WalletInfor').default);
   Navigation.registerComponent('QrCode', () => require('./qrCode/QrCodeScreen').default);
   Navigation.registerComponent('Kyc', () => require('./kyc/KycScreen').default);
+  Navigation.registerComponent('Exchange', () => require('./exchange/ExChange').default);
 }
