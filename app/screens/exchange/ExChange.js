@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, Image, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, TextInput, Image, TouchableOpacity, TouchableWithoutFeedback, ScrollView } from 'react-native';
 import ScaledSheet from '../../libs/reactSizeMatter/ScaledSheet';
 import Modal from 'react-native-modal';
 import ModalDropdown from '../../libs/reactModalDropdown/ModalDropdown';
@@ -213,7 +213,7 @@ class ExChange extends Component {
     const { selectedCoin } = this.state;
 
     return (
-      <View style={styles.screen}>
+      <ScrollView contentContainerStyle={styles.screen}>
         <View style={styles.selectCoinContainer}>
           <View style={styles.sendContainer}>
             <Text style={styles.textSend}>Send</Text>
@@ -236,7 +236,7 @@ class ExChange extends Component {
         {this._renderYourCoinReceive()}
         {this._renderYourAddress()}
         {this._renderSubmit()}
-      </View>
+      </ScrollView>
     )
   }
 }
@@ -246,7 +246,7 @@ export default ExChange;
 const styles = ScaledSheet.create({
   screen: {
     flexDirection: 'column',
-    flex: 1
+    flexGrow: 1
   },
   selectCoinContainer: {
     flexDirection: 'row',
