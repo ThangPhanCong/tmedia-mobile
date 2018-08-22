@@ -43,8 +43,7 @@ export const goMain = () => Navigation.setRoot({
                 selectedIconColor: '#576574',
                 selectedTextColor: '#576574',
               },
-              bottomTabs: {
-              }
+              bottomTabs: {}
             }
           }
         },
@@ -62,8 +61,7 @@ export const goMain = () => Navigation.setRoot({
                 selectedIconColor: '#576574',
                 selectedTextColor: '#576574',
               },
-              bottomTabs: {
-              }
+              bottomTabs: {}
             }
           }
         }
@@ -74,7 +72,7 @@ export const goMain = () => Navigation.setRoot({
 
 export const goQrCode = () => Navigation.showOverlay({
   component: {
-    id:'overlayQrcode',
+    id: 'overlayQrcode',
     name: 'QrCode',
     options: {
       overlay: {
@@ -85,3 +83,17 @@ export const goQrCode = () => Navigation.showOverlay({
 });
 
 export const goBackMyPage = () => Navigation.dismissModal('kycScreen');
+
+export const goSettingScreen = () => Navigation.showModal({
+  stack: {
+    children: [{
+      component: {
+        id: 'settingScreen',
+        name: 'Setting',
+      }
+    }]
+  }
+});
+
+
+export const disMissSetting = () => Navigation.dismissModal('settingScreen');
