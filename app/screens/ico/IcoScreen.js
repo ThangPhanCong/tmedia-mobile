@@ -5,6 +5,7 @@ import { scale } from '../../libs/reactSizeMatter/scalingUtils';
 import SwitchSelector from 'react-native-switch-selector';
 import * as Progress from 'react-native-progress';
 import { goQrCode } from "../navigation";
+import Timeline from 'react-native-timeline-listview'
 
 const { height } = Dimensions.get('window');
 
@@ -14,6 +15,35 @@ class IcoScreen extends PureComponent {
     ethAddress: null,
     isShowEthAddress: false,
     isShowInputEthAddress: false,
+    typeSale: IcoScreen.TYPE_SALE.PRE,
+    timeline: [
+      {
+        time: 'May\n' +
+          '2018', title: 'Ideation, research, initial concepts'
+      },
+      {
+        time: 'Jun\n' +
+          '2018', title: 'Working docs & preliminary specs'
+      },
+      {
+        time: 'Jul\n' +
+          '2018', title: 'Simple Token project scope'
+      },
+      {
+        time: 'Aug\n' +
+          '2018', title: 'Design prototypes & early white papers'
+      },
+      {
+        time: 'Sep\n' +
+          '2018', title: 'Token design model'
+      }
+    ],
+    progress: 1
+  };
+
+  static TYPE_SALE = {
+    PRE: 'Pre sale',
+    PUBLIC: 'Public sale',
   };
 
   static get options() {
@@ -158,16 +188,81 @@ class IcoScreen extends PureComponent {
     )
   }
 
-  render() {
-    const optionSale = [
-      { label: 'Private sale', value: '1' },
-      { label: 'Public sale', value: '1.5' },
-    ];
-
+  _renderPublicSale() {
     const optionCoin = [
       { label: 'BTC', value: '1' },
       { label: 'ETH', value: '1.5' },
     ];
+
+    return (
+      <View>
+        {this._renderDepositAddress()}
+
+        <View style={styles.switchCoin}>
+          <SwitchSelector options={optionCoin} initial={0}
+                          selectedColor={'#FFF'}
+                          buttonColor={'#576574'}
+                          height={scale(20)}
+                          fontSize={scale(12)}
+                          onPress={value => console.log(`Call onPress with value: ${value}`)}/>
+        </View>
+
+        {this._renderEthAddress()}
+        {this._renderHistoryActivities()}
+      </View>
+    )
+  }
+
+  _renderPreSale() {
+    const { timeline } = this.state;
+    return (
+      <View>
+        <View style={styles.borderRoadmapLeft}></View>
+
+        <View style={styles.viewRoadmap}>
+          <Text style={styles.textRoadmap}>Roadmap</Text>
+        </View>
+
+        <View style={styles.borderRoadmapRight}></View>
+
+        <View style={styles.timelineContainer}>
+          <Timeline
+            circleSize={scale(18)}
+            data={timeline}
+            circleColor='#9B9B9B'
+            lineColor='#9B9B9B'
+            timeContainerStyle={{ minWidth: scale(52), marginTop: scale(0) }}
+            timeStyle={{ textAlign: 'center', color: '#9B9B9B', paddingBottom: scale(15) }}
+            descriptionStyle={{ color: 'gray' }}
+            titleStyle={{ fontWeight: 'normal', fontSize: scale(12), color: '#9B9B9B' }}
+            options={{
+              style: { marginTop: scale(15), paddingLeft: scale(15) }
+            }}
+          />
+        </View>
+      </View>
+
+    )
+  }
+
+  _renderContentIco(type) {
+    return (
+      <View>
+        {type === IcoScreen.TYPE_SALE.PRE ? this._renderPreSale()
+          : this._renderPublicSale()
+        }
+      </View>
+    )
+  }
+
+  render() {
+    const optionSale = [
+      { label: IcoScreen.TYPE_SALE.PRE, value: IcoScreen.TYPE_SALE.PRE },
+      { label: IcoScreen.TYPE_SALE.PUBLIC, value: IcoScreen.TYPE_SALE.PUBLIC },
+    ];
+    const { typeSale, progress } = this.state;
+    const positionRight = (315 - (1 - progress) * 315) + 14;
+    const positionRightValue = (315 - (1 - progress) * 315) + (progress === 1 ? 22 : 25);
 
     return (
       <ScrollView contentContainerStyle={styles.screen}>
@@ -175,21 +270,21 @@ class IcoScreen extends PureComponent {
           <Image source={require('../../../assets/backgroundTimeIco/backgroundTimeIco.png')}
                  style={styles.imgBackgroundTimeIco}/>
           <Text style={styles.textPublic}>
-            THE PUBLIC SALE WILL END IN
+            {progress === 0 ? 'THE PUBLIC SALE WILL START IN' : progress === 1 ? 'THE PUBLIC SALE ENDED' : 'THE PUBLIC SALE WILL END IN'}
           </Text>
 
-          <Text style={styles.timeIco}>
+          {progress === 1 ? null : <Text style={styles.timeIco}>
             8 23 : 30 : 30
-          </Text>
+          </Text>}
         </View>
 
-
-        <View style={styles.titleTime}>
+        {progress === 1 ? null : <View style={styles.titleTime}>
           <Text style={styles.textItemTime}>DAYS</Text>
           <Text style={styles.textItemTimeSpace}>HOURS</Text>
           <Text style={styles.textItemTimeSpace}>MINUTES</Text>
           <Text style={styles.textItemTimeSpace}>SECONDS</Text>
-        </View>
+        </View>}
+
 
         <View style={styles.countCoin}>
           <View style={styles.countCoinItem}>
@@ -208,48 +303,33 @@ class IcoScreen extends PureComponent {
                           buttonColor={'#576574'}
                           height={scale(40)}
                           fontSize={scale(12)}
-                          onPress={value => console.log(`Call onPress with value: ${value}`)}/>
+                          onPress={typeSale => this.setState({ typeSale })}/>
         </View>
 
         <View>
           <View>
             <Image source={require('../../../assets/circleProgress/circleProgress.png')}
-                   style={styles.imgCircleProgress}/>
-            <Text style={styles.progressValue}>80</Text>
+                   style={[styles.imgCircleProgress, { left: scale(positionRight), }]}/>
+            <Text style={[styles.progressValue, { left: scale(positionRightValue) }]}>{progress * 100}</Text>
           </View>
 
           <View style={styles.progressBar}>
-            <Progress.Bar progress={0.8} width={scale(315)}
+            <Progress.Bar progress={progress} width={scale(315)}
                           borderWidth={0}
                           height={scale(8)}
                           color={'#838B94'}
                           unfilledColor={'#D8D8D8'}/>
-            <Text style={styles.textRatio}>8,000,000 / 10,000,000</Text>
+            <Text style={styles.textRatio}>{progress * 100000000} / 10,000,000</Text>
           </View>
         </View>
+        {this._renderContentIco(typeSale)}
 
-        {this._renderDepositAddress()}
-
-        <View style={styles.switchCoin}>
-          <SwitchSelector options={optionCoin} initial={0}
-                          selectedColor={'#FFF'}
-                          buttonColor={'#576574'}
-                          height={scale(20)}
-                          fontSize={scale(12)}
-                          onPress={value => console.log(`Call onPress with value: ${value}`)}/>
-        </View>
-
-        {this._renderEthAddress()}
-        {this._renderHistoryActivities()}
       </ScrollView>
     )
   }
 }
 
 export default IcoScreen;
-
-const positionRight = (315 - (1 - 0.8) * 315) + 20;
-const positionRightValue = (315 - (1 - 0.8) * 315) + 26;
 
 const styles = ScaledSheet.create({
   screen: {
@@ -320,29 +400,28 @@ const styles = ScaledSheet.create({
     width: '128@s',
   },
   imgCircleProgress: {
-    width: '21@s',
-    height: '27@s',
+    width: '31@s',
+    height: '40@s',
     position: 'absolute',
-    left: `${positionRight}@s`,
+    // left: `${positionRight}@s`,
     top: '22@s',
   },
   progressValue: {
     fontSize: '8@s',
     position: 'absolute',
-    top: '26@s',
-    left: `${positionRightValue}@s`,
+    top: '31@s',
     color: '#576574',
     fontFamily: 'Futura Light Regular'
   },
   progressBar: {
     position: 'absolute',
     left: '30@s',
-    top: '50@s',
+    top: '60@s',
   },
   textRatio: {
     position: 'absolute',
     fontSize: '10@s',
-    left: '215@s',
+    left: '208@s',
     top: '14@s',
     color: '#576574'
   },
@@ -467,5 +546,55 @@ const styles = ScaledSheet.create({
     textAlign: 'center',
     marginTop: '12@s',
     marginBottom: '14@s',
+  },
+  timelineContainer: {
+    marginTop: '120@s',
+    marginLeft: '29@s',
+    marginRight: '29@s',
+    marginBottom: '29@s',
+    borderWidth: '1@s',
+    borderColor: '#E0E0E0',
+    borderRadius: '5@s',
+    borderTopWidth: 0,
+    justifyContent: 'center',
+  },
+  viewRoadmap: {
+    position: 'absolute',
+    top: '110@s',
+    width: '100@s',
+    alignSelf: 'center',
+    height: '20@s',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: '10@s',
+    borderWidth: '1@s',
+    borderColor: '#E0E0E0',
+    flexDirection: 'row'
+  },
+  textRoadmap: {
+    color: '#576574',
+    fontSize: '12@s',
+    lineHeight: '14@s',
+    fontFamily: 'Futura Light Regular',
+  },
+  borderRoadmapLeft: {
+    height: scale(1),
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    backgroundColor: '#E0E0E0',
+    width: scale(107),
+    position: 'absolute',
+    top: '120@s',
+    marginLeft: '30@s'
+  },
+  borderRoadmapRight: {
+    height: scale(1),
+    flexDirection: 'row',
+    backgroundColor: '#E0E0E0',
+    justifyContent: 'flex-end',
+    width: scale(107),
+    position: 'absolute',
+    top: '120@s',
+    right: '29@s'
   }
 });
