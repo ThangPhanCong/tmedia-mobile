@@ -49,6 +49,25 @@ export const goMain = () => Navigation.setRoot({
         },
         {
           component: {
+            name: 'Exchange',
+            passProps: {
+              text: 'This is tab 2'
+            },
+            options: {
+              bottomTab: {
+                title: 'Tab 3',
+                text: 'Exchange',
+                icon: require('../../assets/exchangeTab/reload.png'),
+                selectedIconColor: '#576574',
+                selectedTextColor: '#576574',
+              },
+              bottomTabs: {
+              }
+            }
+          }
+        },
+        {
+          component: {
             name: 'MyPage',
             passProps: {
               text: 'This is tab 2'
