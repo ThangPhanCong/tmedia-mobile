@@ -61,8 +61,7 @@ export const goMain = () => Navigation.setRoot({
                 selectedIconColor: '#576574',
                 selectedTextColor: '#576574',
               },
-              bottomTabs: {
-              }
+              bottomTabs: {}
             }
           }
         },
