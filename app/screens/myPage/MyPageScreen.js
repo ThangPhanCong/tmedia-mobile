@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, Image, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import ScaledSheet from '../../libs/reactSizeMatter/ScaledSheet';
 import { scale } from "../../libs/reactSizeMatter/scalingUtils";
-import { goKyc } from '../navigation';
+import { goKyc, goSettingScreen } from '../navigation';
 import { Navigation } from "react-native-navigation";
 
 export default class MyPageScreen extends Component {
@@ -430,8 +430,14 @@ export default class MyPageScreen extends Component {
   render() {
     return (
       <View style={styles.screenContainer}>
-        <Text style={styles.title}>dung.nguyen@sotatek.com</Text>
-        <ScrollView style={{ paddingRight: scale(30) }}>
+        <View style={styles.topContainer}>
+          <Text style={styles.title}>dung.nguyen@sotatek.com</Text>
+          <TouchableOpacity onPress={() => goSettingScreen()}>
+            <Image style={styles.iconSetting}
+                   source={require('../../../assets/setting/Shape.png')}/>
+          </TouchableOpacity>
+        </View>
+        <ScrollView style={{ paddingRight: scale(30), paddingLeft: scale(30), marginTop: scale(20) }}>
           {this._renderShowVerifyPhone()}
           {this.__renderShowVerifyGoogleAuth()}
           {this.__renderShowChangePassWord()}
@@ -446,14 +452,11 @@ const styles = ScaledSheet.create({
   screenContainer: {
     flex: 1,
     backgroundColor: '#F5F5F5',
-    padding: '30@s',
-    paddingRight: 0,
   },
   title: {
     fontFamily: 'Futura Book font',
     color: '#576574',
     fontSize: '20@s',
-    marginBottom: '20@s'
   },
   row: {
     marginBottom: '20@s',
@@ -588,5 +591,13 @@ const styles = ScaledSheet.create({
     flex: 3,
     flexDirection: 'row',
     alignItems: 'center'
+  },
+  topContainer: {
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
+    backgroundColor: '#ffffff', height: '60@s',
+    paddingLeft: '30@s', paddingRight: '28@s'
+  },
+  iconSetting: {
+    width: '20@s', height: '20@s'
   }
 });
