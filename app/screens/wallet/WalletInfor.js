@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View, Text, Image, Clipboard, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, Image, Clipboard, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import ScaledSheet from '../../libs/reactSizeMatter/ScaledSheet';
 import MainWalletComponent from "./MainWalletComponent";
 import { scale } from "../../libs/reactSizeMatter/scalingUtils";
@@ -24,6 +24,46 @@ export default class WalletInfor extends PureComponent {
       showModalExportPrivateKey: false,
       showModalPrivateKey: false,
       showModalDeleteWallet: false,
+
+      showSceretCode: false,
+      listHistory: [
+        {
+          time: '10:00 01/12/18',
+          type: 'IN',
+          TXID: '1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX',
+          amount: '1.5 BTC'
+        },
+        {
+          time: '10:00 01/12/18',
+          type: 'OUT',
+          TXID: '1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX',
+          amount: '1.5 BTC'
+        },
+        {
+          time: '10:00 01/12/18',
+          type: 'IN',
+          TXID: '1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX',
+          amount: '0.0001 BTC'
+        },
+        {
+          time: '10:00 01/12/18',
+          type: 'IN',
+          TXID: '1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX',
+          amount: '1.5 BTC'
+        },
+        {
+          time: '10:00 01/12/18',
+          type: 'OUT',
+          TXID: '1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX',
+          amount: '1.5 BTC'
+        },
+        {
+          time: '10:00 01/12/18',
+          type: 'IN',
+          TXID: '1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX',
+          amount: '0.0001 BTC'
+        }
+      ]
     };
   }
 
@@ -34,35 +74,35 @@ export default class WalletInfor extends PureComponent {
         modalHistory =
           <Card containerStyle={[styles.cardHistoryContainer, {height: scale(240)}]}>
             <View>
-              <View style={styles.titleRow}>
+              <TouchableOpacity style={styles.titleRow}
+                                onPress={() => this.setState({ showModalHistory: false })}>
                 <Text style={styles.textHisTrans}>History transaction</Text>
-                <TouchableOpacity style={{ flex: 0.2, flexDirection: 'row', justifyContent: 'flex-end' }}
-                                  onPress={() => this.setState({ showModalHistory: false })}>
+                <View style={{ flex: 0.2, flexDirection: 'row', justifyContent: 'flex-end' }}>
                   <Image style={styles.arrowDown}
                          source={require('../../../assets/arrow/arrowUp/Shape.png')}/>
-                </TouchableOpacity>
-              </View>
+                </View>
+              </TouchableOpacity>
 
               <View style={styles.table}>
                 <View style={styles.row}>
                   <Text style={[styles.titleTable, { flex: 2, textAlign: 'center' }]}>Time</Text>
-                  <Text style={[styles.titleTable, { flex: 5, textAlign: 'right' }]}>TXID</Text>
-                  <Text style={[styles.titleTable, { flex: 3, textAlign: 'right' }]}>Amount</Text>
+                  <Text style={[styles.titleTable, { flex: 2, textAlign: 'center' }]} />
+                  <Text style={[styles.titleTable, { flex: 3.2, textAlign: 'center' }]}>TXID</Text>
+                  <Text style={[styles.titleTable, { flex: 2, textAlign: 'right' }]}>Amount</Text>
                 </View>
 
-                <View style={[styles.row, { marginBottom: scale(6) }]}>
-                  <Text style={[styles.contentTimeTable, { flex: 2, textAlign: 'center' }]}>10:00 01/12/18</Text>
-                  <Text style={[styles.contentInOut, { flex: 2, textAlign: 'center', color: '#10AC84' }]}>IN</Text>
-                  <Text style={[styles.address, { flex: 3, textAlign: 'right' }]} numberOfLines={1}>1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX</Text>
-                  <Text style={[styles.contentTimeTable, { flex: 3, textAlign: 'right' }]}>1.5 BTC</Text>
-                </View>
-
-                <View style={styles.row}>
-                  <Text style={[styles.contentTimeTable, { flex: 2, textAlign: 'center' }]}>12:00 01/12/18</Text>
-                  <Text style={[styles.contentInOut, { flex: 2, textAlign: 'center', color: '#D0021B' }]}>OUT</Text>
-                  <Text style={[styles.address, { flex: 3, textAlign: 'right' }]} numberOfLines={1}>1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX</Text>
-                  <Text style={[styles.contentTimeTable, { flex: 3, textAlign: 'right' }]}>0.25 BTC</Text>
-                </View>
+                <ScrollView>
+                  {
+                    this.state.listHistory.map((object, index) =>
+                      <View style={[styles.row, { marginBottom: scale(6) }]} key={index}>
+                        <Text style={[styles.contentTimeTable, { flex: 2, textAlign: 'center' }]}>{object.time}</Text>
+                        <Text style={[styles.contentInOut, object.type === 'IN' ? {color: '#10AC84'} : {color: '#D0021B'}]}>{object.type}</Text>
+                        <Text style={[styles.address, { flex: 3.2,}]} numberOfLines={1}>{object.TXID}</Text>
+                        <Text style={[styles.contentTimeTable, { flex: 2, textAlign: 'right' }]}>{object.amount}</Text>
+                      </View>
+                    )
+                  }
+                </ScrollView>
               </View>
 
             </View>
@@ -71,14 +111,14 @@ export default class WalletInfor extends PureComponent {
       : (
         modalHistory =
           <Card containerStyle={styles.cardHistoryContainer}>
-            <View style={styles.historyTransactionContainer}>
+            <TouchableOpacity style={styles.historyTransactionContainer}
+                              onPress={() => this.setState({ showModalHistory: true })}>
               <Text style={styles.textHisTrans}>History transaction</Text>
-              <TouchableOpacity style={{ flex: 0.2, flexDirection: 'row', justifyContent: 'flex-end' }}
-                                onPress={() => this.setState({ showModalHistory: true })}>
+              <View style={{ flex: 0.2, flexDirection: 'row', justifyContent: 'flex-end' }}>
                 <Image style={styles.arrowDown}
                        source={require('../../../assets/arrow/arrowDown/Shape.png')}/>
-              </TouchableOpacity>
-            </View>
+              </View>
+            </TouchableOpacity>
           </Card>
       );
     return (
@@ -110,10 +150,18 @@ export default class WalletInfor extends PureComponent {
               <TextInput style={styles.phoneInput}
                          underlineColorAndroid='transparent'
                          keyboardType='numeric'
+                         secureTextEntry={!this.state.showSceretCode}
                 // value={password}
                 // onChangeText={(p) => this._changePassword(p)}
               />
             </View>
+            <TouchableOpacity
+              onPressIn={() => this.setState({ showSceretCode: true })}
+              onPressOut={() => this.setState({ showSceretCode: false })}>
+              <Image style={styles.eye}
+                     source={require('../../../assets/eye/view.png')}/>
+
+            </TouchableOpacity>
           </View>
 
           <TouchableOpacity onPress={() => this.checkSecretCode()}>
@@ -353,13 +401,13 @@ const styles = ScaledSheet.create({
   },
   table: {
     flexDirection: 'column',
-    paddingLeft: '18@s',
-    paddingRight: '18@s'
+    paddingLeft: '18@s', height: '210@s'
   },
   row: {
     flexDirection: 'row',
     height: '30@s',
     alignItems: 'center',
+    paddingRight: '18@s',
   },
   titleTable: {
     fontFamily: 'Futura Heavy font',
@@ -374,7 +422,7 @@ const styles = ScaledSheet.create({
   contentInOut: {
     fontFamily: 'Futura Book Italic',
     fontSize: '13@s',
-    fontStyle: 'italic'
+    fontStyle: 'italic', flex: 2, textAlign: 'center'
   },
   modalExportPrivateKey: {
     height: '130@s',
@@ -436,5 +484,8 @@ const styles = ScaledSheet.create({
     marginLeft: '10@s',
     marginRight: '10@s',
     fontWeight: 'bold'
-  }
+  },
+  eye: {
+    width: '18@s', height: '11@s'
+  },
 });

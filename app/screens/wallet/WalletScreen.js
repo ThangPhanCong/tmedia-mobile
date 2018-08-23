@@ -6,6 +6,7 @@ import { Card } from 'react-native-elements';
 import Modal from 'react-native-modal';
 import { map } from 'lodash';
 import MainWalletComponent from "./MainWalletComponent";
+import { goWalletHistoryScreen } from '../navigation';
 
 export default class OtpScreen extends PureComponent {
   static get options() {
@@ -28,7 +29,8 @@ export default class OtpScreen extends PureComponent {
       showMain2: false,
       showListCoin: false,
       value: 10,
-      selectedCoinType: this.listCoin[0]
+      selectedCoinType: this.listCoin[0],
+      showSceretCode: false
     };
 
   }
@@ -58,21 +60,29 @@ export default class OtpScreen extends PureComponent {
 
                 <View style={styles.privateKeyContainer}>
                   <Text style={styles.textPrivateKey}>Private key</Text>
-                  <View style={{ flexDirection: 'row', height: scale(40), alignItems: 'center' }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                     <Text style={styles.privateKey}>a7cd5fd7dcb3ed17183f786effaa21413234123b</Text>
                     <TouchableOpacity onPress={() => Clipboard.setString('a7cd5fd7dcb3ed17183f786effaa21413234123b')}>
-                      <Text style={styles.textCopy}>COPY</Text>
+                      <Image style={styles.iconCopy}
+                             source={require('../../../assets/iconCopy/Shape.png')} />
                     </TouchableOpacity>
                   </View>
                 </View>
 
                 <View style={styles.privateKeyContainer}>
                   <Text style={styles.textPrivateKey}>Address</Text>
-                  <Text style={[styles.privateKey, { width: scale(275) }]}>1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX</Text>
-                  <View style={styles.qrCodeContainer}>
-                    <Image style={styles.qrCode}
-                           source={require('../../../assets/qrCode/frame.png')}/>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <Text style={[styles.privateKey, {paddingRight: 0}]}>1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX</Text>
+                    <TouchableOpacity onPress={() => Clipboard.setString('1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX')}>
+                      <Image style={styles.iconCopy}
+                             source={require('../../../assets/iconCopy/Shape.png')} />
+                    </TouchableOpacity>
                   </View>
+                </View>
+
+                <View style={styles.qrCodeContainer}>
+                  <Image style={styles.qrCode}
+                         source={require('../../../assets/qrCode/frame.png')}/>
                 </View>
 
                 <View style={[styles.groupMpdalPhoneText, { justifyContent: 'center' }]}>
@@ -121,12 +131,19 @@ export default class OtpScreen extends PureComponent {
                   <View style={{ flex: 2.1 }}>
                     <TextInput style={styles.phoneInput}
                                underlineColorAndroid='transparent'
-                               secureTextEntry={true}
+                               secureTextEntry={!this.state.showSceretCode}
                                keyboardType='numeric'
                       // value={password}
                       // onChangeText={(p) => this._changePassword(p)}
                     />
                   </View>
+                  <TouchableOpacity
+                    onPressIn={() => this.setState({ showSceretCode: true })}
+                    onPressOut={() => this.setState({ showSceretCode: false })}>
+                    <Image style={styles.eye}
+                           source={require('../../../assets/eye/view.png')}/>
+
+                  </TouchableOpacity>
                 </View>
 
                 <View style={{ width: scale(275) }}>
@@ -249,7 +266,8 @@ export default class OtpScreen extends PureComponent {
             <Text style={styles.textUnderTotal}>1.25 BTC</Text>
             <Text>7,500 USD</Text>
           </View>
-          <TouchableOpacity style={[styles.colUpContainer, { flex: 1 }]}>
+          <TouchableOpacity style={[styles.colUpContainer, { flex: 1 }]}
+          onPress={() => goWalletHistoryScreen()}>
             <Text style={styles.textHistory}>HISTORY</Text>
           </TouchableOpacity>
 
@@ -468,7 +486,8 @@ const styles = ScaledSheet.create({
     textAlign: 'left'
   },
   privateKeyContainer: {
-    marginTop: '8@s'
+    marginTop: '8@s',
+    width: '275@s'
   },
   textPrivateKey: {
     color: '#576574',
@@ -478,12 +497,12 @@ const styles = ScaledSheet.create({
   },
   privateKey: {
     fontFamily: 'Futura Light font',
-    fontSize: '13@s',
+    fontSize: '14@s',
     color: '#576574',
-    paddingLeft: '20@s',
     paddingRight: '20@s',
     width: '240@s',
-    textAlign: 'center'
+    textAlign: 'center',
+    letterSpacing: '1@s'
   },
   textCopy: {
     color: '#2E86DE',
@@ -545,5 +564,12 @@ const styles = ScaledSheet.create({
     backgroundColor: 'transparent',
     flexDirection: 'row',
     justifyContent: 'center',
+  },
+  eye: {
+    width: '18@s', height: '11@s'
+  },
+  iconCopy: {
+    width: '17@s', height: '20@s'
   }
+
 });

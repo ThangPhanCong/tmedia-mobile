@@ -113,5 +113,17 @@ export const goSettingScreen = () => Navigation.showModal({
   }
 });
 
-
 export const disMissSetting = () => Navigation.dismissModal('settingScreen');
+
+export const goWalletHistoryScreen = () => Navigation.showModal({
+  stack: {
+    children: [{
+      component: {
+        id: 'walletHistory',
+        name: 'WalletHistory',
+      }
+    }]
+  }
+});
+
+export const disMissWallethistory = () => Navigation.dismissModal('walletHistory');

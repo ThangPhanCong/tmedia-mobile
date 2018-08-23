@@ -9,6 +9,7 @@ export default class MainWalletComponent extends React.Component {
     super(props);
     this.state = {
       showSendCoin: false,
+      showSceretCode: false
     };
 
   }
@@ -30,12 +31,19 @@ export default class MainWalletComponent extends React.Component {
                   <View style={{ flex: 2.1 }}>
                     <TextInput style={styles.phoneInput}
                                underlineColorAndroid='transparent'
-                               secureTextEntry={true}
+                               secureTextEntry={!this.state.showSceretCode}
                                keyboardType='numeric'
                       // value={password}
                       // onChangeText={(p) => this._changePassword(p)}
                     />
                   </View>
+                  <TouchableOpacity
+                    onPressIn={() => this.setState({ showSceretCode: true })}
+                    onPressOut={() => this.setState({ showSceretCode: false })}>
+                    <Image style={styles.eye}
+                           source={require('../../../assets/eye/view.png')}/>
+
+                  </TouchableOpacity>
                 </View>
 
                 <View style={[styles.rowInput, { marginLeft: scale(20) }]}>
@@ -214,4 +222,7 @@ const styles = ScaledSheet.create({
     fontSize: '13@s',
     color: '#10AC84',
   },
+  eye: {
+    width: '18@s', height: '11@s'
+  }
 });
